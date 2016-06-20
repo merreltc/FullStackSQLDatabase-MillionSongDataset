@@ -11,18 +11,18 @@ begin
 
 
 	con.query("CREATE TABLE IF NOT EXISTS \
-		Writers(Id INT PRIMARY KEY AUTO_INCREMENT, Name VARCHAR(25))")
-	con.query("INSERT INTO Writers(Name) VALUES('London')")
-	con.query("INSERT INTO Writers(Name) VALUES('Balzac')")
-	con.query("INSERT INTO Writers(Name) VALUES('Feuchtwanger')")
-	con.query("INSERT INTO Writers(Name) VALUES('Zola')")
-	con.query("INSERT INTO Writers(Name) VALUES('Capote')")
+		Writers(Id INT PRIMARY KEY AUTO_INCREMENT, Name VARCHAR(25), Year INT)")
+	con.query("INSERT INTO Writers(Name,Year) VALUES('London',1957)")
+	con.query("INSERT INTO Writers(Name,Year) VALUES('Balzac',1678)")
+	con.query("INSERT INTO Writers(Name,Year) VALUES('Feuchtwanger',1456)")
+	con.query("INSERT INTO Writers(Name,Year) VALUES('Zola',1867)")
+	con.query("INSERT INTO Writers(Name,Year) VALUES('Capote',1456)")
 
 	rs = con.query("SELECT * FROM Writers")
 	n_rows = rs.num_rows
 
 	rs.each do |row|
-		puts row[1]
+		puts row
 	end
 
 	con.query("DROP TABLE Writers")
