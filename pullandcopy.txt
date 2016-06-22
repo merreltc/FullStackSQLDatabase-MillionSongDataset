@@ -1,0 +1,2 @@
+* * * * * cd ~/MillionSongsSQL/ && git pull && sudo /usr/bin/rsync -a ~/MillionSongsSQL/Code/ /var/www/html/
+
