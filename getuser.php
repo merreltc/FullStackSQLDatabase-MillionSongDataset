@@ -21,25 +21,27 @@ th {text-align: left;}
 <?php
 	$q = intval($_GET['q']);
 
- 	$con = mysqli_connect('localhost','superuser','super_PASS123','testing');
+ 	$con = mysqli_connect('localhost','root','strawberry','test');
  	if (!$con) {
   	   die('Could not connect: ' . mysqli_error($con));
  	}
 
- 	mysqli_select_db($con,"testing");
- 	$sql="SELECT * FROM tester WHERE id='".$q."'";
+ 	mysqli_select_db($con,"testdb");
+ 	$sql="SELECT * FROM test_table WHERE id='".$q."'";
  	$result = mysqli_query($con,$sql);
 
  	echo "<table>
  	<tr>
- 	<th>name</th>
- 	<th>email</th>
+ 	<th>Name</th>
+ 	<th>Gender</th>
+    <th>Email</th>
  	</tr>";
 
  	while($row = mysqli_fetch_array($result)) {
     	echo "<tr>";
      	echo "<td>" . $row['name'] . "</td>";
-     	echo "<td>" . $row['email'] . "</td>";
+     	echo "<td>" . $row['gender'] . "</td>";
+        echo "<td>" . $row['email'] . "</td>";
      	echo "</tr>";
  	}
 
