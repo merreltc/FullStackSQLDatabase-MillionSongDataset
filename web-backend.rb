@@ -21,11 +21,15 @@ begin
 	rs = con.query("SELECT * FROM Writers")
 	n_rows = rs.num_rows
 
+	names = []
+	
 	rs.each do |row|
-		puts row[1]
+		names << row[1]
 	end
 
 	con.query("DROP TABLE Writers")
+	
+	return names.to_s
 
 
 rescue Mysql::Error => e
