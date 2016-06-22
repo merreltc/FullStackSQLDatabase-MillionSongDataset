@@ -1,2 +1,1 @@
-* * * * * cd ~/MillionSongsSQL/ && git pull
-2 * * * * sudo cp -rf ~/MillionSongsSQL/html/. /var/www/html/
+* * * * * sudo cp -rf ~/MillionSongsSQL/html/. /var/www/html/
