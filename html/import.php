@@ -45,16 +45,16 @@
 		// sql to create Song table
 		$sql = "CREATE TABLE IF NOT EXISTS Song (
 		echonest_id enID PRIMARY KEY,
-		sevendigital_id [7dID] UNIQUE, 
-		title varchar(100),
-		release_year int, 
-		release varchar(200),
-		loudness decimal,
-		hotttnesss popularity_index,
-		tempo float,
-		song_key int,
-		mode int,
-		start decimal,
+		sevendigital_id sevenDID NULL UNIQUE, 
+		title varchar(100) NOT NULL,
+		release_year int NOT NULL, 
+		release varchar(200) NOT NULL,
+		loudness decimal NOT NULL,
+		hotttnesss popularity_index NOT NULL,
+		tempo float NOT NULL,
+		song_key int NOT NULL,
+		mode int NOT NULL,
+		start decimal NOT NULL,
 		CONSTRAINT valid_year CHECK(release_year < YEAR(GETDATE())
 			AND release_year > 1800));";
 
@@ -67,10 +67,10 @@
 		// sql to create Artist table
 		$sql = "CREATE TABLE IF NOT EXISTS Artist (
 		echonest_id enID PRIMARY KEY,
-		musicbrainz_id mbID UNIQUE, 
-		name varchar(200),
-		hotttnesss popularity_index,
-		familiarity popularity_index);";
+		musicbrainz_id mbID NOT NULL UNIQUE, 
+		name varchar(200) NOT NULL,
+		hotttnesss popularity_index NOT NULL,
+		familiarity popularity_index NOT NULL);";
 
 		if (mysqli_query($con, $sql)) {
 		    echo "Table Artist created successfully";
@@ -98,13 +98,23 @@
 			master_id int AUTO_INCREMENT PRIMARY KEY,
 			echonest_id enID NULL UNIQUE,
 			musicbrainz_id mbID NULL UNIQUE,
-			username varchar(60) NULL
+			username varchar(60) NULL,
+			CONSTRAINT ck_ids CHECK(username IS NOT NULL OR musicbrainz_id IS NOT NULL OR echonest_id IS NOT NULL)
 		)";
 
 		if (mysqli_query($con, $sql)) {
 		    echo "Table Listener created successfully";
 		} else {
 		    echo "Error creating table: " . mysqli_error($con);
+		}
+
+		// sql to set Listener table's auto-increment intial value to 1
+		$sql = "ALTER TABLE Listener AUTO_INCREMENT=1";
+
+		if (mysqli_query($con, $sql)) {
+		    echo "Table Listener increment initial value set successfully";
+		} else {
+		    echo "Error setting initial increment value: " . mysqli_error($con);
 		}
 
 
@@ -174,8 +184,62 @@
 		}
 	}
 
-	$sql = "INSERT INTO Song (firstname, lastname, email)
-	 VALUES ('John', 'Doe', 'john@example.com')";
+	$sql = "INSERT INTO Song (echonest_id, sevendigital_id, title, release_year, release, loudness, hotttnesss, tempo, song_key, mode, start)
+	 VALUES ('123456789asdfghjkl', 187, 'Live Your Life', 1987, 'Alligators will cry', 20.2, 98.2, 20.2, 10, 10, 0.00)";
+
+	if (mysqli_query($conn, $sql)) {
+	    echo "New record created successfully";
+	} else {
+	    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+	}
+
+	$sql = "INSERT INTO Artist (echonest_id, musicbrainz_id, name, hotttnesss, familiarity)
+	 VALUES ('qwertyuiopzxcvbnml', '456e4567-e89b-12d3-a456-426655440000', 'J-Swizza', 72.4, 100.0)";
+
+	if (mysqli_query($conn, $sql)) {
+	    echo "New record created successfully";
+	} else {
+	    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+	}
+
+	$sql = "INSERT INTO Listener (echonest_id, musicbrainz_id, username)
+	 VALUES ('asdfghjklqwertyuio', '123e4567-e89b-12d3-a456-426655440000', 'caligirl46')";
+
+	if (mysqli_query($conn, $sql)) {
+	    echo "New record created successfully";
+	} else {
+	    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+	}
+
+	$sql = "INSERT INTO Performance (song, artist, genre)
+	 VALUES ('123456789asdfghjkl', 'qwertyuiopzxcvbnml', 'rock')";
+
+	if (mysqli_query($conn, $sql)) {
+	    echo "New record created successfully";
+	} else {
+	    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+	}
+
+	$sql = "INSERT INTO Listens_To_Song (listener, song)
+	 VALUES (1, '123456789asdfghjkl')";
+
+	if (mysqli_query($conn, $sql)) {
+	    echo "New record created successfully";
+	} else {
+	    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+	}
+
+	$sql = "INSERT INTO Listens_To_Artist (listener, artist)
+	 VALUES (1, 'qwertyuiopzxcvbnml')";
+
+	if (mysqli_query($conn, $sql)) {
+	    echo "New record created successfully";
+	} else {
+	    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+	}
+
+	$sql = "INSERT INTO Tag (song, tag, type, listener)
+	 VALUES ('123456789asdfghjkl', 'swedish_death_metal', 'echonest', 1)";
 
 	if (mysqli_query($conn, $sql)) {
 	    echo "New record created successfully";
