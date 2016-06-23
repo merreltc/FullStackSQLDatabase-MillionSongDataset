@@ -12,7 +12,7 @@
  	}
 
  	// Make MillionSongs the current database
-	$db_selected = mysql_select_db($con, 'testdb');
+	$db_selected = mysql_select_db($con, 'projecttest');
 	if (!$db_selected) {
 		// Create database and tables
 		 $sql = "CREATE DATABASE testdb";
