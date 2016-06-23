@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<?php require 'import.php';?>
+
 <style>
 table {
     width: 100%;
