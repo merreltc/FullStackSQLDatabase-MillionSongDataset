@@ -18,6 +18,8 @@ th {text-align: left;}
 
 <body>
 
+<?php require 'import.php';?>
+
 <?php
 	$q = intval($_GET['q']);
 
