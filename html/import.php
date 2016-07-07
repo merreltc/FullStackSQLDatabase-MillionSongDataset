@@ -4,12 +4,12 @@
 </head>
 <body>
 <?php
- 	$con = mysqli_connect('localhost','root','strawberry','test');
+$con = mysqli_connect('localhost','root','10826294');
  	if (!$con) {
   	   die('Could not connect: ' . mysqli_error($con));
  	}
 
- 	// Make MillionSongs the current database
+ 	// Make MillionSongs the current database		
 	$db_selected = mysqli_select_db($con, 'projecttest');
 	if (!$db_selected) {
 		// Create database and tables
@@ -25,8 +25,11 @@
 		// sql to create Song table
 		$sql = "CREATE TABLE IF NOT EXISTS Song (
 		echonest_id char(18) PRIMARY KEY,
+		track_id char(18),
 		sevendigital_id int NULL UNIQUE, 
 		title varchar(100) NOT NULL,
+		artist char(18) NOT NULL,
+		genre varchar(100) NULL,
 		release_year YEAR NOT NULL, 
 		album varchar(200) NOT NULL,
 		loudness decimal(5,2) NOT NULL,
@@ -61,26 +64,11 @@
 		    echo "Error creating Artist table: " . mysqli_error($con);
 		}
 
-		// sql to create Performance table
-		$sql = "CREATE TABLE IF NOT EXISTS Performance (
-		song char(18),
-		artist char(18), 
-		genre varchar(200) NULL,
-		FOREIGN KEY (song) REFERENCES Song(echonest_id),
-		FOREIGN KEY (artist) REFERENCES Artist(echonest_id),
-		PRIMARY KEY(artist, song));";
-
-		if (mysqli_query($con, $sql)) {
-		    echo "Table Performance created successfully\n";
-		} else {
-		    echo "Error creating Performance table: " . mysqli_error($con);
-		}
-		
-			// sql to create Listener table
+		// sql to create Listener table
 		$sql = "CREATE TABLE IF NOT EXISTS Listener (
 			master_id int AUTO_INCREMENT PRIMARY KEY,
 			echonest_id char(18) NULL UNIQUE,
-			musicbrainz_id char(38) NULL UNIQUE,
+			lastfm_sha char(40) NULL UNIQUE,
 			username varchar(60) NULL,
 			CONSTRAINT ck_ids CHECK(username IS NOT NULL OR musicbrainz_id IS NOT NULL OR echonest_id IS NOT NULL)
 		)";
@@ -100,16 +88,13 @@
 		    echo "Error setting initial increment value: " . mysqli_error($con);
 		}
 
-
 		// sql to create Tag table
 		$sql = "CREATE TABLE IF NOT EXISTS Tag (
 		song char(18),
 		tag VARCHAR(200) NOT NULL,
-		type ENUM('echonest','musicbrainz') NOT NULL,
-		listener int,
+		listener int NULL,
 		FOREIGN KEY (song) REFERENCES Song(echonest_id),
 		FOREIGN KEY (listener) REFERENCES Listener(master_id),
-		PRIMARY KEY(song, listener)
 		)";
 
 		if (mysqli_query($con, $sql)) {
@@ -137,6 +122,7 @@
 		$sql = "CREATE TABLE IF NOT EXISTS Listens_To_Artist (
 		listener int,
 		artist char(18),
+		playcount int DEFAULT 1,
 		FOREIGN KEY (artist) REFERENCES Artist(echonest_id),
 		FOREIGN KEY (listener) REFERENCES Listener(master_id),
 		PRIMARY KEY(artist, listener)
@@ -166,67 +152,120 @@
 		}
 	}
 
-	$sql = "INSERT INTO Song (echonest_id, sevendigital_id, title, release_year, album, loudness, hotttnesss, tempo, song_key, mode, start)
-	 VALUES ('abcdefghijklmnopqr', 187, 'Live Your Life', 1987, 'Alligators will cry', 20.2, 0.98, 20.2, 10, 10, 0.00)";
+	$songsartistsfile = fopen("SongsArtists.tsv", "r") or die("Unable to open file! :(");
+	while(!feof($songsartistsfile)) {
+		$fields = explode("\t", fgets($songsartistsfile));
+		$sql = "INSERT INTO Artist (echonest_id, musicbrainz_id, name, hotttnesss, familiarity)
+			 VALUES ('{$fields[12]}', '{$fileds[13]}', '{$fields[14]}', {$fields[15]}, {$fields[16]})";
 
-	if (mysqli_query($con, $sql)) {
-	    echo "New record in Song created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		if (mysqli_query($con, $sql)) {
+		    echo "New record in Artist created successfully\n";
+		} else {
+		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		}
+		$sql = "INSERT INTO Song (echonest_id, track_id, sevendigital_id, title, artist, release_year, album, loudness, hotttnesss, tempo, song_key, mode, start)
+			VALUES ('{$fields[0]}', '{$fields[1]}', '{$fields[2]}', '{$fields[3]}', {$fields[12]}, {$fields[4]}, '{$fields[5]}', {$fields[6]}, {$fields[7]}, {$fields[8]}, {$fields[9]}, {$fields[10]}, {$fields[11]})";
+	
+		if (mysqli_query($con, $sql)) {
+		    echo "New record in Song created successfully\n";
+		} else {
+		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		}
 	}
+	fclose($songsartistsfile);
 
-	$sql = "INSERT INTO Artist (echonest_id, musicbrainz_id, name, hotttnesss, familiarity)
-	 VALUES ('1q2w3e4r5t6y7u8i9o', '456e4567-e89b-12d3-a456-426655440000', 'J-Swizza', 0.73, 0.99)";
+	$genresfile = fopen("Genres.tsv", "r") or die("Unable to open file! :(");
+	while(!feof($genresfile)) {
+		$fields = explode("\t" fgets($genresfile));
+		$sql = "INSERT INTO Song (genre)
+			VALUES ('{$fields[1]}')
+			WHERE track_id = {$fields[0]}";
 
-	if (mysqli_query($con, $sql)) {
-	    echo "New record in Artist created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		if(mysqli_query($con, $sql)) {
+			echo "Genre added to Song tuple successfulyl";
+		} else {
+		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";	
+		}
 	}
+	fclose($genresfile);
 
-	$sql = "INSERT INTO Listener (echonest_id, musicbrainz_id, username)
-	 VALUES ('asdfghjklqwertyuio', '123e4567-e89b-12d3-a456-426655440000', 'caligirl46')";
+	$songsfile = fopen("SongListens.tsv", "r") or die("Unable to open file! :(");
+	while(!feof($songsfile)) {
+		$fields = explode("\t", fgets($songsfile));
+		$sql = "INSERT INTO Listener (echonest_id, lastfm_sha, username)
+		 	VALUES ('{$fields[0]}', null, null)";
 
-	if (mysqli_query($con, $sql)) {
-	    echo "New record in Listener created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		if (mysqli_query($con, $sql)) {
+		    echo "New record in Listener created successfully\n";
+		} else {
+		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		}
+
+		$sql = "SELECT master_id
+			FROM Listener
+			WHERE echonest_id = {$fields[0]}";
+		$result = mysqli_query($con, $sql))
+		$id = mysqli_fetch_array($result, MYSQLI_ASSOC)["master_id"];
+
+		$sql = "INSERT INTO Listens_To_Song (listener, song, playcount)
+			VALUES ({$id}, {$fields[1]}, {$fields[2]})";
+	
+		if (mysqli_query($con, $sql)) {
+		    echo "New record in Listens_To_Song created successfully\n";
+		} else {
+		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		}
 	}
+	fclose($songsfile);
+	
+	$artistsfile = fopen("ArtistListens.tsv", "r") or die("Unable to open file! :(");
+	while(!feof($artistsfile)) {
+		$fields = explode("\t", fgets($artistsfile));
+		$sql = "INSERT INTO Listener (echonest_id, lastfm_sha, username)
+			VALUES (null, '{$fields[0]}', null)";
 
-	$sql = "INSERT INTO Performance (song, artist, genre)
-	 VALUES ('abcdefghijklmnopqr', '1q2w3e4r5t6y7u8i9o', 'rock')";
+		if (mysqli_query($con, $sql)) {
+		    echo "New record in Listener created successfully\n";
+		} else {
+		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		}
+		
+		$sql = "SELECT master_id
+			FROM Listener
+			WHERE lastfm_sha = {$fields[0]}";
+		$result = mysqli_query($con, $sql));
+		$id = mysqli_fetch_array($result, MYSQLI_ASSOC)["master_id"];
 
-	if (mysqli_query($con, $sql)) {
-	    echo "New record in Performance created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		
+		$sql = "INSERT INTO Listens_To_Artist (listener, artist, playcount)
+		 VALUES ({$id}, {$fields[1]}, {$fields[2]})";
+	
+		if (mysqli_query($con, $sql)) {
+		    echo "New record  in Listens_To_Artist created successfully\n";
+		} else {
+		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		}
 	}
+	fclose($artistsfile);
 
-	$sql = "INSERT INTO Listens_To_Song (listener, song)
-	 VALUES (1, 'abcdefghijklmnopqr')";
+	$songtagfile = fopen("SongTags.tsv", "r") or die("Unable to open file! :(");
+	while(!feof($songtagfile)) {
+		$fields = explode("\t", fgets($songtagfile));
 
-	if (mysqli_query($con, $sql)) {
-	    echo "New record in Listens_To_Song created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
-	}
+		$sql = "SELECT song_id
+			FROM Song
+			WHERE track_id = {$fields[1]}"
+		$result = mysqli_query($con, $sql);
+		$song_id = mysqli_fetch_array($result, MYSQLI_ASSOC)["song_id"];
 
-	$sql = "INSERT INTO Listens_To_Artist (listener, artist)
-	 VALUES (1, '1q2w3e4r5t6y7u8i9o')";
-
-	if (mysqli_query($con, $sql)) {
-	    echo "New record  in Listens_To_Artist created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
-	}
-
-	$sql = "INSERT INTO Tag (song, tag, type, listener)
-	 VALUES ('abcdefghijklmnopqr', 'swedish_death_metal', 'echonest', 1)";
-
-	if (mysqli_query($con, $sql)) {
-	    echo "New recordin Tag created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con);
+		$sql = "INSERT INTO Tag (song, tag)
+			VALUES ('{$song_id}', '{$fields[0]}')";
+	
+		if (mysqli_query($con, $sql)) {
+		    echo "New recordin Tag created successfully\n";
+		} else {
+		    echo "Error: " . $sql . "<br>" . mysqli_error($con);
+		}
 	}
 
 	/*To DROP Database
