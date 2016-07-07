@@ -4,6 +4,11 @@
 
 <?php require 'import.php';?>
 
+<?php
+    //Including FusionCharts’ PHP Wrapper
+    include("fusioncharts.php");
+?>
+
 <style>
 table {
     width: 100%;
@@ -24,27 +29,29 @@ th {text-align: left;}
 <?php
 	$q = intval($_GET['q']);
 
- 	$con = mysqli_connect('localhost','root','strawberry','test');
+ 	$con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
  	if (!$con) {
   	   die('Could not connect: ' . mysqli_error($con));
  	}
 
- 	mysqli_select_db($con,"testdb");
- 	$sql="SELECT * FROM test_table WHERE id='".$q."'";
+ 	mysqli_select_db($con,"projecttest");
+ 	$sql="SELECT * FROM projecttest";
  	$result = mysqli_query($con,$sql);
 
  	echo "<table>
  	<tr>
- 	<th>Name</th>
- 	<th>Gender</th>
-    <th>Email</th>
+ 	<th>ID</th>
+ 	<th>Echonest</th>
+    <th>MusicBrainz</th>
+    <th>Username</th>
  	</tr>";
 
  	while($row = mysqli_fetch_array($result)) {
     	echo "<tr>";
-     	echo "<td>" . $row['name'] . "</td>";
-     	echo "<td>" . $row['gender'] . "</td>";
-        echo "<td>" . $row['email'] . "</td>";
+     	echo "<td>" . $row['master_id'] . "</td>";
+     	echo "<td>" . $row['echonest_id'] . "</td>";
+        echo "<td>" . $row['musicbrainz_id'] . "</td>";
+        echo "<td>" . $row['username'] . "</td>";
      	echo "</tr>";
  	}
 
