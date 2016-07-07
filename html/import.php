@@ -4,7 +4,7 @@
 </head>
 <body>
 <?php
- 	$con = mysqli_connect('localhost','root','strawberry','test');
+ 	$con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
  	if (!$con) {
   	   die('Could not connect: ' . mysqli_error($con));
  	}
@@ -164,79 +164,18 @@
 		} else {
 		    echo "Error creating Listens_To_Song table: " . mysqli_error($con);
 		}
+
 	}
 
-	$sql = "INSERT INTO Song (echonest_id, sevendigital_id, title, release_year, album, loudness, hotttnesss, tempo, song_key, mode, start)
-	 VALUES ('abcdefghijklmnopqr', 187, 'Live Your Life', 1987, 'Alligators will cry', 20.2, 0.98, 20.2, 10, 10, 0.00)";
 
-	if (mysqli_query($con, $sql)) {
-	    echo "New record in Song created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
-	}
-
-	$sql = "INSERT INTO Artist (echonest_id, musicbrainz_id, name, hotttnesss, familiarity)
-	 VALUES ('1q2w3e4r5t6y7u8i9o', '456e4567-e89b-12d3-a456-426655440000', 'J-Swizza', 0.73, 0.99)";
-
-	if (mysqli_query($con, $sql)) {
-	    echo "New record in Artist created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
-	}
-
-	$sql = "INSERT INTO Listener (echonest_id, musicbrainz_id, username)
-	 VALUES ('asdfghjklqwertyuio', '123e4567-e89b-12d3-a456-426655440000', 'caligirl46')";
-
-	if (mysqli_query($con, $sql)) {
-	    echo "New record in Listener created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
-	}
-
-	$sql = "INSERT INTO Performance (song, artist, genre)
-	 VALUES ('abcdefghijklmnopqr', '1q2w3e4r5t6y7u8i9o', 'rock')";
-
-	if (mysqli_query($con, $sql)) {
-	    echo "New record in Performance created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
-	}
-
-	$sql = "INSERT INTO Listens_To_Song (listener, song)
-	 VALUES (1, 'abcdefghijklmnopqr')";
-
-	if (mysqli_query($con, $sql)) {
-	    echo "New record in Listens_To_Song created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
-	}
-
-	$sql = "INSERT INTO Listens_To_Artist (listener, artist)
-	 VALUES (1, '1q2w3e4r5t6y7u8i9o')";
-
-	if (mysqli_query($con, $sql)) {
-	    echo "New record  in Listens_To_Artist created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
-	}
-
-	$sql = "INSERT INTO Tag (song, tag, type, listener)
-	 VALUES ('abcdefghijklmnopqr', 'swedish_death_metal', 'echonest', 1)";
-
-	if (mysqli_query($con, $sql)) {
-	    echo "New recordin Tag created successfully\n";
-	} else {
-	    echo "Error: " . $sql . "<br>" . mysqli_error($con);
-	}
-
-	/*To DROP Database
+	// To DROP Database
 		$sql = "DROP DATABASE projecttest";
 	
 		if (mysqli_query($con, $sql)) {
 		    echo "Database deleted successfully\n";
 		} else {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con);
-		}*/
+		}
 
  	mysqli_close($con);
  ?>
