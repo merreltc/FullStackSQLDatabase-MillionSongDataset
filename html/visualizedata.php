@@ -1,63 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-<?php require 'import.php';?>
-
 <?php
-    //Including FusionCharts’ PHP Wrapper
-    include("fusioncharts.php");
+  // require 'import.php'
+  include("fusioncharts.php");
+  $q = intval($_GET['q']);
+
+  $con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
+  if (!$con) {
+    die('Could not connect: ' . mysqli_error($con));
+  }
+
+  mysqli_select_db($con,"testdb");
+  $sql="SELECT gender, COUNT(*) AS gender_count FROM test_table GROUP BY gender";
+  $result = mysqli_query($con,$sql);
+
+  //initialize the array to store the processed data
+  $arrData = array();
+
+  // iterating over each data and pushing it into $arrData array
+  while ($row = mysqli_fetch_array($result)) {
+    array_push($arrData, array(
+      "label" => $row["gender"],
+      "value" => $row["gender_count"]
+      ));
+  }
+
+  // $jsonEncodedData = json_encode($arrData);
+  mysqli_close($con);
+
+  //set the response content type as JSON
+  header('Content-type: application/json');
+  //output the return value of json encode using the echo function. 
+  echo json_encode($arrData);
 ?>
-
-<style>
-table {
-    width: 75%;
-    border-collapse: collapse;
-}
-
- table, td, th {
-    border: 1px solid black;
-    padding: 5px;
-}
-
-th {text-align: left;}
-</style>
-</head>
-
-<body>
-
-<?php
-	$q = intval($_GET['q']);
-
- 	$con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
- 	if (!$con) {
-  	   die('Could not connect: ' . mysqli_error($con));
- 	}
-
- 	mysqli_select_db($con,"projecttest");
- 	$sql="SELECT * FROM projecttest";
- 	$result = mysqli_query($con,$sql);
-
- 	echo "<table>
- 	<tr>
- 	<th>ID</th>
- 	<th>Echonest</th>
-    <th>MusicBrainz</th>
-    <th>Username</th>
- 	</tr>";
-
- 	while($row = mysqli_fetch_array($result)) {
-    	echo "<tr>";
-     	echo "<td>" . $row['master_id'] . "</td>";
-     	echo "<td>" . $row['echonest_id'] . "</td>";
-        echo "<td>" . $row['musicbrainz_id'] . "</td>";
-        echo "<td>" . $row['username'] . "</td>";
-     	echo "</tr>";
- 	}
-
-	echo "</table>";
- 	mysqli_close($con);
- ?>
-
-</body>
-</html>

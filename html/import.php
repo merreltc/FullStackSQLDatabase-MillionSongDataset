@@ -10,7 +10,7 @@
 
  	$con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
  	if (!$con) {
-  	   die('Could not connect: ' . mysqli_error($con) . "\n");
+  	   die('Could not connect: ' . mysqli_error($con);
  	}
 
  	// Make MillionSongs the current database		

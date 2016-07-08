@@ -1,10 +1,10 @@
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Million Songs SQL | Welcome</title>
-    <link rel="stylesheet" type="text/css" href="millsongs.css">>
-  <script>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Million Songs SQL | Welcome</title>
+	<link rel="stylesheet" type="text/css" href="millsongs.css">
+<!--   <script>
   function displayUser(str) {
       if (str == "") {
           document.getElementById("txtHint").innerHTML = "";
@@ -26,126 +26,135 @@
           xmlhttp.send();
       }
   }
-  </script>
+</script> -->
 </head>
 
 <body>
 
-    <!-- Start Top Bar -->
-    <div class="top-bar">
-      <div class="top-bar-left">
-        <ul class="menu">
-          <li class="menu-text">Million Songs SQL</li>
-        </ul>
-      </div>
-    </div>
-    <!-- End Top Bar -->
+	<!-- Start Top Bar -->
+	<div class="top-bar">
+		<div class="top-bar-left">
+			<ul class="menu">
+				<li class="menu-text">Million Songs SQL</li>
+			</ul>
+		</div>
+	</div>
+	<!-- End Top Bar -->
 
-    <div class="callout large">
-     <div class="row column text-center">
-       <h1>Million Songs SQL</h1>
-       <p class="lead">Everything you never needed to know about contemporary music.</p>
-     </div>
-    </div>
+	<div class="callout large">
+		<div class="row column text-center">
+			<h1>Million Songs SQL</h1>
+			<p class="lead">Everything you never needed to know about contemporary music.</p>
+		</div>
+	</div>
 
-    <div class="row">
-        <ul class="menu text-center">
-          <li class="menu-text">Home</li>
-          <li><a href="#">Tags</a></li>
-          <li><a href="#">Recommendation Engine</a></li>
-          <li><a href="#">Beautiful Cacophony</a></li>
-          <li><a href="#">My Account</a></li>
-        </ul>
-    </div>
+	<div class="row">
+		<center>
+		<ul class="menu">
+				<li class="menu-text">Home</li>
+				<li><a href="#">Tags</a></li>
+				<li><a href="#">Recommendation Engine</a></li>
+				<li><a href="#">Beautiful Cacophony</a></li>
+				<li><a href="#">My Account</a></li>
+			</ul>
+		</center>
+	</div>
 
-<hr>
+	<hr>
 
-<div class="row">
-  <div class="medium-8 columns">
-    <form>
-    <select name="users" onchange="displayUser(this.value)" style="width:25%">
-        <option value="">Select a Listener:</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-      </select>
+	<div class="row">
+		<div class="medium-8 columns">
+			<center>
+			<form>
+				<!-- <select name="users" onchange="displayUser(this.value)" style="width:25%"> -->
+				<select name="users" style="width:30%">
+					<option value="">Select a Listener:</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+				</select>
 
-      <select name="query" style="width:25%">
-        <option value="">Select a query:</option>
-        <option value="1">Percentages</option>
-        <option value="2">Over time</option>
-        <osption value="3">Specifics</option>
-      </select>
-      
-      <select name="specific_year" style="width:25%">
-        <option value="">Select a decade:</option>
-        <option value="1">1970</option>
-        <option value="2">1980</option>
-        <option value="3">1990</option>
-        <option value="3">2000</option>
-        <option value="3">2010</option>
-      </select>
-    </form>
+				<select name="query" style="width:30%">
+					<option value="">Select a query:</option>
+					<option value="1">Percentages</option>
+					<option value="2">Over time</option>
+					<osption value="3">Specifics</option>
+					</select>
 
-    <br>
+					<select name="specific-year" style="width:30%">
+						<option value="">Select a decade:</option>
+						<option value="1">1970</option>
+						<option value="2">1980</option>
+						<option value="3">1990</option>
+						<option value="3">2000</option>
+						<option value="3">2010</option>
+					</select>
+				</form>
 
-    <div id="txtHint" class="text-center">
-      <b>Data visualization will be here...</b>
-    </div>
-  </div>
+				<br>
 
-  <div class="medium-3 columns">
-    <h5 style="float:center">Recommended for you!</h5>
-    <hr>
+				<div id="visual-container">
+					<b>Visualization Will Render Here...</b>
+				</div>
+				</center>
+			</div>
 
-    <div>
-      <ul>
-        <li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 1</a></li>
-        <li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 2</a></li>
-        <li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 3</a></li>
-        <li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 4</a></li>
-      </ul>
-    </div>
+			<div class="medium-3 columns">
+				<center><h5>Recommended for you!</h5></center>
+				<hr>
 
-    <hr>
+				<div>
+					<ul>
+						<li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 1</a></li>
+						<li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 2</a></li>
+						<li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 3</a></li>
+						<li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 4</a></li>
+					</ul>
+				</div>
 
-    <h5 style="float:center">Most Popular Tags</h5>
+				<hr>
 
-    <hr>
+				<center><h5>Most Popular Tags</h5></center>
 
-    <div class="text-center">
-      <img class="thumbnail" src="http://placehold.it/300x300">
-    </div>
-  </div>
+				<hr>
 
-</div>
+				<div class="text-center">
+					<img class="thumbnail" src="http://placehold.it/300x300">
+				</div>
+			</div>
 
-  <hr>
+		</div>
 
-  <div class="row column">
-    <ul class="vertical medium-horizontal menu expanded text-center">
-      <li><a href="#"><div class="stat">40,000</div><span>Songs</span></a></li>
-      <li><a href="#"><div class="stat">5,000</div><span>Artists</span></a></li>
-      <li><a href="#"><div class="stat">10 mil.</div><span>Listeners</span></a></li>
-      <li><a href="#"><div class="stat">3 bil.</div><span>Tags</span></a></li>
-      <li><a href="#"><div class="stat">18</div><span>Useless Facts</span></a></li>
-    </ul>
-  </div>
+		<hr>
 
-  <hr>
+		<div class="row column">
+			<ul class="vertical medium-horizontal menu expanded text-center">
+				<li><a href="#"><div class="stat">40,000</div><span>Songs</span></a></li>
+				<li><a href="#"><div class="stat">5,000</div><span>Artists</span></a></li>
+				<li><a href="#"><div class="stat">10 mil.</div><span>Listeners</span></a></li>
+				<li><a href="#"><div class="stat">3 bil.</div><span>Tags</span></a></li>
+				<li><a href="#"><div class="stat">18</div><span>Useless Facts</span></a></li>
+			</ul>
+		</div>
 
- <div class="row column">
-      <ul class="menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Tags</a></li>
-        <li><a href="#">Recommendation Engine</a></li>
-        <li><a href="#">Beautiful Cacophony</a></li>
-        <li><a href="#">My Account</a></li>
-      </ul>
-  </div>
+		<hr>
 
-  
-  <!-- Including FusionCharts JavaScript file -->
-  <script type="text/javascript" src="fusioncharts.js"></script>
-</body>
-</html>
+		<center>
+			<div class="row column">
+				<ul class="menu">
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Tags</a></li>
+					<li><a href="#">Recommendation Engine</a></li>
+					<li><a href="#">Beautiful Cacophony</a></li>
+					<li><a href="#">My Account</a></li>
+				</ul>
+			</div>
+		</center>
+
+		<script src="js/jquery-3.0.0.js"></script>
+		<script src="js/fusioncharts.js"></script>
+		<script src="js/fusioncharts.charts.js"></script>
+		<script src="js/themes/fusioncharts.theme.zune.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+	</html>
