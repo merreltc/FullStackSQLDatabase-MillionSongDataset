@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-
-<?php require 'createdb.php';?>
-
 <?php
+	require 'createdb.php';
 
  	$con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
  	if (!$con) {
@@ -19,7 +12,7 @@
 		die('Database not connected');
 	}
 
-	$songsartistsfile = fopen("SongsArtists.tsv", "r") or echo("Unable to open file! :(");
+	$songsartistsfile = fopen("SongsArtists.tsv", "r") or die("Unable to open file! :(");
 	while(!feof($songsartistsfile)) {
 		$fields = explode("\t", fgets($songsartistsfile));
 		$sql = "INSERT INTO Artist (echonest_id, musicbrainz_id, name, hotttnesss, familiarity)
@@ -145,6 +138,4 @@
 		}
 
  	mysqli_close($con);
- ?>
-</body>
-</html>
+?>
