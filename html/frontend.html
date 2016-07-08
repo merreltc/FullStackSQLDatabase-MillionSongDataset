@@ -49,7 +49,7 @@
     </div>
 
     <div class="row">
-        <ul class="menu">
+        <ul class="menu text-center">
           <li class="menu-text">Home</li>
           <li><a href="#">Tags</a></li>
           <li><a href="#">Recommendation Engine</a></li>
@@ -61,7 +61,7 @@
 <hr>
 
 <div class="row">
-  <div class="row column text-center">
+  <div class="medium-8 columns">
     <form>
     <select name="users" onchange="displayUser(this.value)" style="width:25%">
         <option value="">Select a Listener:</option>
@@ -74,7 +74,7 @@
         <option value="">Select a query:</option>
         <option value="1">Percentages</option>
         <option value="2">Over time</option>
-        <option value="3">Specifics</option>
+        <osption value="3">Specifics</option>
       </select>
       
       <select name="specific_year" style="width:25%">
@@ -89,19 +89,34 @@
 
     <br>
 
-    <div id="txtHint">
+    <div id="txtHint" class="text-center">
       <b>Data visualization will be here...</b>
     </div>
   </div>
 
-// syntax for chart instance -         
-new FusionCharts("type of chart", 
-                "unique chart id", 
-                "width of chart", 
-                "height of chart", 
-                "div container id to render the chart", 
-                "type of data", 
-                "actual data")
+  <div class="medium-3 columns">
+    <h5 style="float:center">Recommended for you!</h5>
+    <hr>
+
+    <div>
+      <ul>
+        <li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 1</a></li>
+        <li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 2</a></li>
+        <li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 3</a></li>
+        <li><img class="thumbnail" src="http://placehold.it/50x50"><span>  </span><a href="#">Song 4</a></li>
+      </ul>
+    </div>
+
+    <hr>
+
+    <h5 style="float:center">Most Popular Tags</h5>
+
+    <hr>
+
+    <div class="text-center">
+      <img class="thumbnail" src="http://placehold.it/300x300">
+    </div>
+  </div>
 
 </div>
 
