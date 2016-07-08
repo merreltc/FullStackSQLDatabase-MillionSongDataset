@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
 <?php
 
  	$con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
@@ -155,5 +150,3 @@
 
  	mysqli_close($con);
  ?>
-</body>
-</html>
