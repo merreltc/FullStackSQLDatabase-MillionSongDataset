@@ -1,6 +1,6 @@
 <?php
 
- 	$con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
+$con = mysqli_connect('localhost','root','10826294');
  	if (!$con) {
   	   die('Could not connect: ' . mysqli_error($con) . "\n");
  	}
@@ -63,7 +63,7 @@
 		// sql to create Listener table
 		$sql = "CREATE TABLE IF NOT EXISTS Listener (
 			master_id int AUTO_INCREMENT PRIMARY KEY,
-			echonest_id char(18) NULL UNIQUE,
+			echonest_id char(40) NULL UNIQUE,
 			lastfm_sha char(40) NULL UNIQUE,
 			username varchar(60) NULL,
 			CONSTRAINT ck_ids CHECK(username IS NOT NULL OR musicbrainz_id IS NOT NULL OR echonest_id IS NOT NULL)

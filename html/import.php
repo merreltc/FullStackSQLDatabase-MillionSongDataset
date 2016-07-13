@@ -1,7 +1,20 @@
 <?php
 	require 'createdb.php';
 
- 	$con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
+function sanitizeField($field) {
+	$san = str_replace("'", "''", $field);
+	$san = rtrim($san);
+	return $san;
+}
+
+function sanitizeArray($arr) {
+	for($i=0; $i < count($arr); $i += 1) {
+		$arr[$i] = sanitizeField($arr[$i]);
+	}
+	return $arr;
+}
+
+$con = mysqli_connect('localhost','root','10826294');
  	if (!$con) {
  		die('Could not connect: ' . mysqli_error($con) . "\n");
  	}
@@ -15,7 +28,7 @@
 	$songsartistsfile = fopen("/var/www/html/imports/SongsArtists.tsv", "r") or die("Unable to open file! :(");
 
 	while(!feof($songsartistsfile)) {
-		$fields = explode("\t", fgets($songsartistsfile));
+		$fields = sanitizeArray(explode("\t", fgets($songsartistsfile)));
 		$sql = "INSERT INTO Artist (echonest_id, musicbrainz_id, name, hotttnesss, familiarity)
 			 VALUES ('{$fields[12]}', '{$fields[13]}', '{$fields[14]}', {$fields[15]}, {$fields[16]})";
 
@@ -38,13 +51,13 @@
 	$genresfile = fopen("/var/www/html/imports/Genres.tsv", "r") or die("Unable to open file! :(");
 
 	while(!feof($genresfile)) {
-		$fields = explode("\t", fgets($genresfile));
-		$sql = "INSERT INTO Song (genre)
-			VALUES ('{$fields[1]}')
-			WHERE track_id = {$fields[0]}";
+		$fields = sanitizeArray(explode("\t", fgets($genresfile)));
+		$sql = "UPDATE Song 
+			SET genre = '{$fields[1]}'
+			WHERE track_id = '{$fields[0]}';";
 
 		if(mysqli_query($con, $sql)) {
-			echo "Genre added to Song tuple successfulyl";
+			echo "Genre added to Song tuple successfuly\n";
 		} else {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";	
 		}
@@ -66,12 +79,12 @@
 
 		$sql = "SELECT master_id
 			FROM Listener
-			WHERE echonest_id = {$fields[0]}";
+			WHERE echonest_id = '{$fields[0]}'";
 		$result = mysqli_query($con, $sql);
 		$id = mysqli_fetch_array($result, MYSQLI_ASSOC)["master_id"];
 
 		$sql = "INSERT INTO Listens_To_Song (listener, song, playcount)
-			VALUES ({$id}, {$fields[1]}, {$fields[2]})";
+			VALUES ({$id}, '{$fields[1]}', {$fields[2]})";
 	
 		if (mysqli_query($con, $sql)) {
 		    echo "New record in Listens_To_Song created successfully\n";
@@ -85,6 +98,7 @@
 
 	while(!feof($artistsfile)) {
 		$fields = explode("\t", fgets($artistsfile));
+		$fields[1] = str_replace("-", "", $fields[1]);
 		$sql = "INSERT INTO Listener (echonest_id, lastfm_sha, username)
 			VALUES (null, '{$fields[0]}', null)";
 
@@ -96,13 +110,18 @@
 		
 		$sql = "SELECT master_id
 			FROM Listener
-			WHERE lastfm_sha = {$fields[0]}";
+			WHERE lastfm_sha = '{$fields[0]}'";
 		$result = mysqli_query($con, $sql);
 		$id = mysqli_fetch_array($result, MYSQLI_ASSOC)["master_id"];
 
+		$sql = "SELECT echonest_id
+			FROM Artist
+			WHERE musicbrainz_id = '{$fields[1]}'";
+		$result = mysqli_query($con, $sql);
+		$artist = mysqli_fetch_array($result, MYSQLI_ASSOC)["echonest_id"];
 		
 		$sql = "INSERT INTO Listens_To_Artist (listener, artist, playcount)
-		 VALUES ({$id}, {$fields[1]}, {$fields[2]})";
+		 VALUES ({$id}, '{$artist}', {$fields[3]})";
 	
 		if (mysqli_query($con, $sql)) {
 		    echo "New record  in Listens_To_Artist created successfully\n";
@@ -115,11 +134,12 @@
 	$songtagfile = fopen("/var/www/html/imports/SongTags.tsv", "r") or die("Unable to open file! :(");
 
 	while(!feof($songtagfile)) {
-		$fields = explode("\t", fgets($songtagfile));
+		$fields = sanitizeArray(explode("\t", fgets($songtagfile)));
 
 		$sql = "SELECT song_id
 			FROM Song
-			WHERE track_id = {$fields[1]}";
+			WHERE track_id = '{$fields[1]}'";
+		echo $sql;
 
 		$result = mysqli_query($con, $sql);
 		$song_id = mysqli_fetch_array($result, MYSQLI_ASSOC)["song_id"];
@@ -133,15 +153,6 @@
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con);
 		}
 	}
-
-	// To DROP Database
-		$sql = "DROP DATABASE projecttest";
-	
-		if (mysqli_query($con, $sql)) {
-		    echo "Database deleted successfully\n";
-		} else {
-		    echo "Error: " . $sql . "<br>" . mysqli_error($con);
-		}
 
  	mysqli_close($con);
 ?>
