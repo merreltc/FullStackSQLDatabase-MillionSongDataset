@@ -65,7 +65,7 @@ dfn{
 }
 
 mark{
-	background:#ff0;
+	background:#000;
 	color:#000
 }
 
@@ -206,7 +206,7 @@ body{
 }
 
 select{
-	width:100%
+	width:25%
 }
 
 #map_canvas embed,#map_canvas img,#map_canvas object,.map_canvas embed,.map_canvas img,.map_canvas object,.mqa-display embed,.mqa-display img,.mqa-display object{

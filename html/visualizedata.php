@@ -1,33 +1,87 @@
 <?php
   // require 'import.php'
-  include("fusioncharts.php");
-  $q = intval($_GET['q']);
+  // include("fusioncharts.php");
+$sql = $_GET['sql_label'];
+$song = $_GET['song'];
 
-  $con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
-  if (!$con) {
-    die('Could not connect: ' . mysqli_error($con));
-  }
+$con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
+if (!$con) {
+  die('Could not connect: ' . mysqli_error($con));
+}
 
-  mysqli_select_db($con,"testdb");
-  $sql="SELECT gender, COUNT(*) AS gender_count FROM test_table GROUP BY gender";
+mysqli_select_db($con,"projecttest");
+
+switch ($sql) {
+  case 'genre-count-song':
+  $sql="SELECT DISTINCT genre, COUNT(*) as genre_count FROM Song WHERE genre IS NOT NULL GROUP BY genre";
   $result = mysqli_query($con,$sql);
 
-  //initialize the array to store the processed data
+    //initialize the array to store the processed data
   $arrData = array();
 
-  // iterating over each data and pushing it into $arrData array
+    // iterating over each data and pushing it into $arrData array
   while ($row = mysqli_fetch_array($result)) {
     array_push($arrData, array(
-      "label" => $row["gender"],
-      "value" => $row["gender_count"]
+      "label" => $row["genre"],
+      "value" => $row["genre_count"]
       ));
   }
+  break;
 
+  case 'genre-count-artist':
+  $sql="SELECT DISTINCT genre, COUNT(*) as genre_count FROM Song s, Artist a WHERE genre IS NOT NULL AND s.artist = a.echonest_id GROUP BY genre";
+  $result = mysqli_query($con,$sql);
+
+    //initialize the array to store the processed data
+  $arrData = array();
+
+    // iterating over each data and pushing it into $arrData array
+  while ($row = mysqli_fetch_array($result)) {
+    array_push($arrData, array(
+      "label" => $row["genre"],
+      "value" => $row["genre_count"]
+      ));
+  }
+  break;
+
+  // case "search-song":
+  // mysqli_select_db($con,"projecttest");
+  // $sql="SELECT * FROM Song WHERE title = $song";
+  // $result = mysqli_query($con,$sql);
+
+  //   //initialize the array to store the processed data
+  // $arrData = array();
+
+  //   // iterating over each data and pushing it into $arrData array
+  // while ($row = mysqli_fetch_array($result)) {
+  //   array_push($arrData, array(
+  //     "label" => $row["genre"],
+  //     "value" => $row["genre_count"]
+  //     ));
+  // }
+  // break;
+
+  default:
+  $sql="SELECT release_year, COUNT(*) AS year_count FROM Song WHERE release_year <> 0 GROUP BY release_year";
+  $result = mysqli_query($con,$sql);
+
+    //initialize the array to store the processed data
+  $arrData = array();
+
+    // iterating over each data and pushing it into $arrData array
+  while ($row = mysqli_fetch_array($result)) {
+    array_push($arrData, array(
+      "label" => $row["release_year"],
+      "value" => $row["year_count"]
+      ));
+  }
+  break;
+}
   // $jsonEncodedData = json_encode($arrData);
-  mysqli_close($con);
+mysqli_close($con);
 
   //set the response content type as JSON
-  header('Content-type: application/json');
+header('Content-type: application/json');
   //output the return value of json encode using the echo function. 
-  echo json_encode($arrData);
+echo json_encode($arrData);
 ?>

@@ -1,13 +1,15 @@
-$(function() {
+function generate(sql) {
+	var sql_type = sql
 	$.ajax({
 
 		url: 'http://localhost/visualizedata.php',
 		type: 'GET',
+		data: {sql_label: sql_type},
 		success: function(data) {
 
 			chartData = data;
 			var chartProperties = {
-				"caption": "Songs Released By Year",
+				"caption": "Testing",
 				"startingangle": "120",
 				"showlabels": "0",
 				"showlegend": "1",
@@ -15,7 +17,7 @@ $(function() {
 				"slicingdistance": "15",
 				"showpercentvalues": "1",
 				"showpercentintooltip": "0",
-				"plottooltext": "Year: $label Total Songs: $datavalue",
+				"plottooltext": "Age group : $label Total Users: $datavalue",
 				"theme": "zune"
 			};
 
@@ -33,4 +35,4 @@ $(function() {
 			apiChart.render();
 		}
 	});
-});
+}
