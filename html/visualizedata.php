@@ -95,7 +95,7 @@ switch ($sql) {
   break;
 
     case "ot-genre-pop":
-  $sql="SELECT release_year, AVG(hotttnesss) FROM Song WHERE release_year <> 0 AND genre = 'Pop_Rock' GROUP BY release_year";
+  $sql="SELECT release_year, AVG(hotttnesss) AS avg_pop FROM Song WHERE release_year <> 0 AND genre = 'Pop_Rock' GROUP BY release_year";
   $result = mysqli_query($con,$sql);
 
     //initialize the array to store the processed data
@@ -105,7 +105,7 @@ switch ($sql) {
   while ($row = mysqli_fetch_array($result)) {
     array_push($arrData, array(
       "label" => $row["release_year"],
-      "value" => $row["hotttnesss"]
+      "value" => $row["avg_pop"]
       ));
   }
 
