@@ -4,17 +4,19 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Million Songs SQL | Welcome</title>
 	<link rel="stylesheet" type="text/css" href="millsongs.css">
-
 	<script>
 		function restart() {
-			hide('percent-criteria');
-			hide('search-song');
+			hide('perc-year-genre-artist');
+			hide('perc-year-genre-song');
+			hide('perc-by-year');
+			hide('perc-overall');
+			hide('perc-criteria');
+			hide('overtime-criteria');
 
 			document.getElementById('constraint').disabled = false;
 			document.getElementById('constraint').value = '';
 		}
 	</script>
-
 	<script>
 		function hide(divId)
 		{
@@ -23,14 +25,15 @@
 			}
 			if(document.getElementById(divId).style.display == 'block' || document.getElementById(divId).style.display == '') {
 				document.getElementById(divId).disabled = false;
+				document.getElementById('constraint').value = '';
 				document.getElementById(divId).style.display = 'none';
 			}
 		}
 	</script>
-
-	<script>
+	<script >
 		function show(divId)
 		{
+
 			var newDiv = document.getElementById(divId).value;
 
 			if(newDiv == "") {
@@ -44,7 +47,6 @@
 			document.getElementById(divId).disabled = true;
 		}
 	</script>
-
 </head>
 
 <body>
@@ -82,23 +84,33 @@
 
 	<div class="row">
 		<div class="medium-8 columns">
-				<select id="constraint" name="constraint" onchange="show(this.id)" style="width:23%">
-					<option value="" style="display:none" selected="selected">Select a Constraint:</option>
-					<option value="search-song">Song Stats</option>
-					<option value="percent-criteria">Percentages</option>
-				</select>
 
-				<select id="percent-criteria" onchange="generate(this.value)"  style="display:none">
-					<option value="" style="display:none" selected="selected">Select Criteria:</option>
-					<option value="genre-count-song">Song Genre</option>
-					<option value="genre-count-artist">Artist Genre</option>
-				</select>
+			<select id="constraint" onchange="populateSelect(this.id);show(this.id)" style="width:27%">
+				<option value="" style="display:none" selected="selected">Percentage or Over Time:</option>
+				<option value="perc-criteria">Percentage</option>
+				<option value="overtime-criteria">Over Time</option>
+			</select>
 
-				<input id="search-song" type="search" style="display:none">
+			<!-- Loudness, Genre Popularity, Track Count -->
+			<select id="overtime-criteria" onchange="generatearea(this.value)" style="display:none"></select>
 
-				<br>
+			<!-- Overall, By Year -->
+			<select id="perc-criteria" onchange="populateSelect(this.id);show(this.id)" style="display:none"></select>
 
-				<button id="restart" type="button" onclick="restart()">Restart</button>
+			<!-- Song Genre, Artist Genre -->
+			<select id="perc-overall" onchange="generatepi(this.value)"  style="display:none"></select>
+
+			<!-- Song Genre, Artist Genre -->
+			<select id="perc-by-year" onchange="populateSelect(this.id);show(this.id)"  style="display:none"></select>
+
+			<!-- Years (1926-2010) -->
+			<select id="perc-year-genre-artist" onchange="generatepi(this.id, this.value)" style="display:none"></select>
+
+			<!-- Years (1926-2010) -->
+			<select id="perc-year-genre-song" onchange="generatepi(this.id, this.value)" style="display:none"></select>
+
+			<br>
+			<button id="restart" type="button" onclick="restart()">Restart</button>
 			<hr>
 
 			<center>
