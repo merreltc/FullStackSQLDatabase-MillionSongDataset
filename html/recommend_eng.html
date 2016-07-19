@@ -1,44 +1,11 @@
 <html>
 <head>
+
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Million Songs SQL | Welcome</title>
 	<link rel="stylesheet" type="text/css" href="millsongs.css">
-	<script>
-		function restart() {
 
-		}
-	</script>
-	<script>
-		function hide(divId)
-		{
-			if(divId == "") {
-				return;
-			}
-			if(document.getElementById(divId).style.display == 'block' || document.getElementById(divId).style.display == '') {
-				document.getElementById(divId).disabled = false;
-				document.getElementById('constraint').value = '';
-				document.getElementById(divId).style.display = 'none';
-			}
-		}
-	</script>
-	<script >
-		function show(divId)
-		{
-
-			var newDiv = document.getElementById(divId).value;
-
-			if(newDiv == "") {
-				return;
-			}
-
-			if(document.getElementById(newDiv).style.display == 'none') {
-				document.getElementById(newDiv).style.display = '';
-			}
-
-			document.getElementById(divId).disabled = true;
-		}
-	</script>
 </head>
 
 <body>
@@ -64,6 +31,37 @@
 	</div>
 
 	<hr>
+
+	<div class="row columns">
+		<div class="medium-6 columns">
+			<h5 style="text-align:center">Recommend Based on Song</h5>
+			<hr>
+
+			<form>
+				<input type="text" name="song" maxlength="200" required>
+				<input  type="submit" name="submit" value="Recommend">
+			</form>
+			<hr>
+
+			<div id="recommend-song"><p>Song recommendations will go here</p></div>
+
+		</div>
+
+		<div class="medium-6 columns">
+
+			<h5 style="text-align:center">Recommend Based on Artist</h5>
+			<hr>
+
+			<form>
+				<input type="text" name="artist" maxlength="200" required>
+				<input  type="submit" name="submit" value="Recommend">
+			</form>
+			<hr>
+
+			<div id="recommend-artist"><p>Artist recommendations will go here</p></div>
+
+		</div>
+	</div>
 
 	<hr>
 

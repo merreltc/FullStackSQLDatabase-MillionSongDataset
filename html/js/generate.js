@@ -38,15 +38,35 @@ $(function() {
 function generatepi(sql,extra) {
 	var sql_type = sql;
 	var extra_data;
+	var cap;
+	var subcap;
+	var somevar;
+	var othervar;
 	switch(sql_type) {
 		case "genre-perc-song":
+			cap = "Genre Percentage Overtime";
+			subcap = "in Songs";
+			somevar = "Genre";
+			othervar = "% of Songs";
 		break;
 		case "genre-perc-artist":
+			cap = "Genre Percentage Overtime";
+			subcap = "in Artists";
+			somevar = "Genre";
+			othervar = "% of Artists";
 		break;
 		case "perc-year-genre-song":
+			cap = "Genre Percentage in " + extra;
+			subcap = "in Songs";
+			somevar = "Genre";
+			othervar = "% of Songs";
 			extra_data = extra;
 		break;
 		case "perc-year-genre-artist":
+			cap = "Genre Percentage in " + extra;
+			subcap = "in Artists";
+			somevar = "Genre";
+			othervar = "% of Artists";
 			extra_data = extra;
 		break;
 	}
@@ -58,7 +78,8 @@ function generatepi(sql,extra) {
 
 			chartData = data;
 			var chartProperties = {
-				"caption": "SQL Query",
+				"caption": cap,
+				"subCaption": subcap,
 				"startingangle": "120",
 				"showlabels": "0",
 				"showlegend": "1",
@@ -66,7 +87,7 @@ function generatepi(sql,extra) {
 				"slicingdistance": "15",
 				"showpercentvalues": "1",
 				"showpercentintooltip": "0",
-				"plottooltext": "SomeVariable: $label OtherVariable: $datavalue",
+				"plottooltext": somevar + ": $label "+othervar+": $datavalue",
 				"theme": "zune"
 			};
 
@@ -88,13 +109,29 @@ function generatepi(sql,extra) {
 
 function generatearea(sql,extra) {
 	var sql_type = sql;
+	var cap;
+	var subcap;
+	var xvar;
+	var yvar;
 	var extra_data;
 	switch(sql_type) {
 		case "ot-loudness":
+		cap = "Loudness Overtime";
+		subcap = "";
+		xvar = "Year";
+		yvar = "Loudness";
 		break;
 		case "ot-genre-pop":
+		cap = "Genre Popularity Overtime";
+		subcap = "Pop Rock";
+		xvar = "Year";
+		yvar = "Hotttnesss (Index)";
 		break;
 		case "ot-track-count":
+		cap = "Total Tracks Overtime";
+		subcap = "";
+		xvar = "Year";
+		yvar = "# of Tracks";
 		break;
 	}
 	$.ajax({
@@ -105,10 +142,10 @@ function generatearea(sql,extra) {
 
 			chartData = data;
 			var chartProperties = {
-                "caption": "SQL Query",
-                "subCaption": "SubCaption",
-                "xAxisName": "SomeVariable",
-                "yAxisName": "OtherVariable",
+				"caption": cap,
+				"subCaption": subcap,
+                "xAxisName": xvar,
+                "yAxisName": yvar,
                 "theme": "zune",
                 //Setting gradient fill to true
                 "usePlotGradientColor": "1",

@@ -7,7 +7,9 @@
 	<script>
 		function restart() {
 			hide('update-song');
+			document.getElementById('update-song').reset();
 			hide('add-song');
+			document.getElementById('add-song').reset();
 
 			document.getElementById('options').disabled = false;
 			document.getElementById('options').value = '';
@@ -86,31 +88,46 @@
 		<input type="button" value="Restart"  onclick="restart()">
 
 		<form id="update-song" style="display:none" action="php/update_song.php">
-			<fieldset>
-				<legend>Update Song:</legend>
-				<p>Any non-required field left blank will not be considered.</p>
-				Title*<input type="text" name="song-title" value="Sun Don't Shine"><br>
+			Title*<input type="text" name="song-title" maxlength="200" required>
 
-				Artist<input type="text" name="artist"><br>
+			Artist<input type="text" name="artist" maxlength="200">
 
-				<p>* Required field</p>
-				<input type="submit" value="Submit">
-				<input type="reset" value="Reset">
-			</fieldset>
+			Genre<input type="text" name="genre" maxlength="100">
 
+			Album<input type="text" name="album" maxlength="200">
+
+			Release Year <input type="year" name="release_year">
+
+			<br>
+			<br>
+			* Required field<br>
+			**Any non-required field left blank will not be considered.<br>
+			Have more advanced information on this song? <a href="#">Contact us!</a><br>
+
+			<input type="submit" value="Submit">
+			<input type="reset" value="Reset">
 		</form>
 
 		<form id="add-song" style="display:none" action="php/add_song.php">
-			<fieldset>
-				<legend>Add Song:</legend>
-				<p>Any non-required field left blank will not be considered.</p>
-				Title*	<input type="text" name="song-title" value="Sun Don't Shine"><br>
-				Artist <input type="text" name="lastname"><br>
 
-				<p>* Required field</p>
-				<input type="submit" value="Submit">
-				<input type="reset" value="Reset">
-			</fieldset>
+			Title*<input type="text" name="song-title" maxlength="200" required>
+
+			Artist*<input type="text" name="artist" maxlength="200" required>
+
+			Genre<input type="text" name="genre" maxlength="100">
+
+			Album*<input type="text" name="album" maxlength="200" required>
+
+			Release Year <input type="year" name="release_year">
+
+			<br>
+			<br>
+			* Required field<br>
+			**Any non-required field left blank will not be considered.<br>
+			Have more advanced information on this song? <a href="#">Contact us!</a><br>
+
+			<input type="submit" value="Submit">
+			<input type="reset" value="Reset">
 		</form>
 
 	</div>

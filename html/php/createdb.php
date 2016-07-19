@@ -23,7 +23,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		echonest_id char(18) PRIMARY KEY,
 		track_id char(18) NOT NULL,
 		sevendigital_id int NULL UNIQUE, 
-		title varchar(100) NOT NULL,
+		title varchar(200) NOT NULL,
 		artist char(18) NOT NULL,
 		genre varchar(100) NULL,
 		release_year YEAR NOT NULL, 
