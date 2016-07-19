@@ -168,7 +168,7 @@
 		<ul class="menu">
 			<li><a href="index_mill.html">Home</a></li>
 			<li><a href="tags.html">Tags</a></li>
-			<li><a href="recommend_eng.html">Recommendation Engine</a></li>
+			<li><a href="recommend_eng.php">Recommendation Engine</a></li>
 			<li><a href="cacophony.html">Beautiful Cacophony</a></li>
 			<li><a href="help_us.html">Help Us Out</a></li>
 			<li><a href="#">My Account</a></li>
