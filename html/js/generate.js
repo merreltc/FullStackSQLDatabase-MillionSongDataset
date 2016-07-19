@@ -1,7 +1,7 @@
 $(function() {
 	$.ajax({
 
-		url: 'http://localhost/visualizedata.php',
+		url: 'http://localhost/php/visualizedata.php',
 		type: 'GET',
 		success: function(data) {
 
@@ -51,7 +51,7 @@ function generatepi(sql,extra) {
 		break;
 	}
 	$.ajax({
-		url: 'http://localhost/visualizedata.php',
+		url: 'http://localhost/php/visualizedata.php',
 		type: 'GET',
 		data: {sql_label: sql_type, extra: extra_data},
 		success: function(data) {
@@ -98,7 +98,7 @@ function generatearea(sql,extra) {
 		break;
 	}
 	$.ajax({
-		url: 'http://localhost/visualizedata.php',
+		url: 'http://localhost/php/visualizedata.php',
 		type: 'GET',
 		data: {sql_label: sql_type, extra: extra_data},
 		success: function(data) {
@@ -109,7 +109,7 @@ function generatearea(sql,extra) {
                 "subCaption": "SubCaption",
                 "xAxisName": "SomeVariable",
                 "yAxisName": "OtherVariable",
-                "theme": "fint",
+                "theme": "zune",
                 //Setting gradient fill to true
                 "usePlotGradientColor": "1",
                 //Setting the gradient formation color

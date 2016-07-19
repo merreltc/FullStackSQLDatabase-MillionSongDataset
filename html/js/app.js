@@ -68,7 +68,7 @@ function populateSelect(thisId){
 
 	// Loudness, Genre Popularity, Track Count
 	if(sel=='overtime-criteria'){
-		$('#'+sel).append('<option style="display:none" selected="selected" value="">Overall or By Year:</option>');
+		$('#'+sel).append('<option style="display:none" selected="selected" value="">Select Criteria:</option>');
 
 		// Loop through JSON
 		for (var key in overtime_criteria) {

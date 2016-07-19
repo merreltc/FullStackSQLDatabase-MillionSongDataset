@@ -25,7 +25,6 @@
 			}
 			if(document.getElementById(divId).style.display == 'block' || document.getElementById(divId).style.display == '') {
 				document.getElementById(divId).disabled = false;
-				document.getElementById('constraint').value = '';
 				document.getElementById(divId).style.display = 'none';
 			}
 		}
@@ -51,16 +50,6 @@
 
 <body>
 
-	<!-- Start Top Bar -->
-	<div class="top-bar">
-		<div class="top-bar-left">
-			<ul class="menu">
-				<li class="menu-text">Million Songs SQL</li>
-			</ul>
-		</div>
-	</div>
-	<!-- End Top Bar -->
-
 	<div class="callout large">
 		<div class="row column text-center">
 			<h1>Million Songs SQL</h1>
@@ -72,9 +61,10 @@
 		<center>
 			<ul class="menu">
 				<li class="menu-text">Home</li>
-				<li><a href="#">Tags</a></li>
-				<li><a href="#">Recommendation Engine</a></li>
-				<li><a href="#">Beautiful Cacophony</a></li>
+				<li><a href="tags.html">Tags</a></li>
+				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
+				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
+				<li><a href="help_us.html">Help Us Out</a></li>
 				<li><a href="#">My Account</a></li>
 			</ul>
 		</center>
@@ -98,10 +88,10 @@
 			<select id="perc-criteria" onchange="populateSelect(this.id);show(this.id)" style="display:none"></select>
 
 			<!-- Song Genre, Artist Genre -->
-			<select id="perc-overall" onchange="generatepi(this.value)"  style="display:none"></select>
+			<select id="perc-overall" onchange="generatepi(this.value)" style="display:none"></select>
 
 			<!-- Song Genre, Artist Genre -->
-			<select id="perc-by-year" onchange="populateSelect(this.id);show(this.id)"  style="display:none"></select>
+			<select id="perc-by-year" onchange="populateSelect(this.id);show(this.id)" style="display:none"></select>
 
 			<!-- Years (1926-2010) -->
 			<select id="perc-year-genre-artist" onchange="generatepi(this.id, this.value)" style="display:none"></select>
@@ -110,7 +100,9 @@
 			<select id="perc-year-genre-song" onchange="generatepi(this.id, this.value)" style="display:none"></select>
 
 			<br>
-			<button id="restart" type="button" onclick="restart()">Restart</button>
+
+			<input id="restart" type="reset" onclick="restart()" value="Restart">
+
 			<hr>
 
 			<center>
@@ -167,9 +159,9 @@
 
 	<div class="row column">
 		<ul class="vertical medium-horizontal menu expanded text-center">
-			<li><a href="#"><div class="stat">40,000</div><span>Songs</span></a></li>
-			<li><a href="#"><div class="stat">5,000</div><span>Artists</span></a></li>
-			<li><a href="#"><div class="stat">10 mil.</div><span>Listeners</span></a></li>
+			<li><a href="#"><div class="stat">9,988</div><span>Songs</span></a></li>
+			<li><a href="#"><div class="stat">3,489</div><span>Artists</span></a></li>
+			<li><a href="#"><div class="stat">44,602</div><span>Listeners</span></a></li>
 			<li><a href="#"><div class="stat">3 bil.</div><span>Tags</span></a></li>
 			<li><a href="#"><div class="stat">18</div><span>Useless Facts</span></a></li>
 		</ul>
@@ -180,10 +172,11 @@
 	<center>
 		<div class="row column">
 			<ul class="menu">
-				<li><a href="#">Home</a></li>
-				<li><a href="#">Tags</a></li>
-				<li><a href="#">Recommendation Engine</a></li>
-				<li><a href="#">Beautiful Cacophony</a></li>
+				<li><a href="index_mill.html">Home</a></li>
+				<li><a href="tags.html">Tags</a></li>
+				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
+				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
+				<li><a href="help_us.html">Help Us Out</a></li>
 				<li><a href="#">My Account</a></li>
 			</ul>
 		</div>

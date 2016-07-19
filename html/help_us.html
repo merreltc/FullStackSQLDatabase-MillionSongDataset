@@ -1,0 +1,146 @@
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Million Songs SQL | Welcome</title>
+	<link rel="stylesheet" type="text/css" href="millsongs.css">
+	<script>
+		function restart() {
+			hide('update-song');
+			hide('add-song');
+
+			document.getElementById('options').disabled = false;
+			document.getElementById('options').value = '';
+		}
+	</script>
+	<script>
+		function hide(divId)
+		{
+			if(divId == "") {
+				return;
+			}
+			if(document.getElementById(divId).style.display == 'block' || document.getElementById(divId).style.display == '') {
+				document.getElementById(divId).disabled = false;
+				document.getElementById(divId).style.display = 'none';
+			}
+		}
+	</script>
+	<script >
+		function show(divId)
+		{
+
+			var newDiv = document.getElementById(divId).value;
+
+			if(newDiv == "") {
+				return;
+			}
+
+			if(document.getElementById(newDiv).style.display == 'none') {
+				document.getElementById(newDiv).style.display = '';
+			}
+
+			document.getElementById(divId).disabled = true;
+		}
+	</script>
+</head>
+
+<body>
+
+	<div class="callout large">
+		<div class="row column text-center">
+			<h1>Million Songs SQL</h1>
+			<p class="lead">Everything you never needed to know about contemporary music.</p>
+		</div>
+	</div>
+
+	<div class="row">
+		<center>
+			<ul class="menu">
+				<li><a href="index_mill.html">Home</a></li>
+				<li><a href="tags.html">Tags</a></li>
+				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
+				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
+				<li class="menu-text">Help Us Out</li>
+				<li><a href="#">My Account</a></li>
+			</ul>
+		</center>
+	</div>
+
+	<hr>
+
+	<p style="text-align:center">Here you can update songs already in our database or add new songs!</p>
+	<p style="text-align:center">Note: Your changes will need to be approved by our admins, so make sure you're submitting responsibly.</p>
+
+	<hr>
+
+	<div class="row">
+
+		<h5>What do you want to do?</h5>
+
+		<select id="options" onchange="show(this.id)" style="width:27%">
+			<option value="" style="display:none" selected="selected">Pick an option:</option>
+			<option value="update-song">Update Song</option>
+			<option value="add-song">Add Song</option>
+		</select>
+
+		<input type="button" value="Restart"  onclick="restart()">
+
+		<form id="update-song" style="display:none" action="php/update_song.php">
+			<fieldset>
+				<legend>Update Song:</legend>
+				<p>Any non-required field left blank will not be considered.</p>
+				Title*<input type="text" name="song-title" value="Sun Don't Shine"><br>
+
+				Artist<input type="text" name="artist"><br>
+
+				<p>* Required field</p>
+				<input type="submit" value="Submit">
+				<input type="reset" value="Reset">
+			</fieldset>
+
+		</form>
+
+		<form id="add-song" style="display:none" action="php/add_song.php">
+			<fieldset>
+				<legend>Add Song:</legend>
+				<p>Any non-required field left blank will not be considered.</p>
+				Title*	<input type="text" name="song-title" value="Sun Don't Shine"><br>
+				Artist <input type="text" name="lastname"><br>
+
+				<p>* Required field</p>
+				<input type="submit" value="Submit">
+				<input type="reset" value="Reset">
+			</fieldset>
+		</form>
+
+	</div>
+
+	<hr>
+
+	<div class="row column">
+		<ul class="vertical medium-horizontal menu expanded text-center">
+			<li><a href="#"><div class="stat">9,988</div><span>Songs</span></a></li>
+			<li><a href="#"><div class="stat">3,489</div><span>Artists</span></a></li>
+			<li><a href="#"><div class="stat">44,602</div><span>Listeners</span></a></li>
+			<li><a href="#"><div class="stat">3 bil.</div><span>Tags</span></a></li>
+			<li><a href="#"><div class="stat">18</div><span>Useless Facts</span></a></li>
+		</ul>
+	</div>
+
+	<hr>
+
+	<center>
+		<div class="row column">
+			<ul class="menu">
+				<li><a href="index_mill.html">Home</a></li>
+				<li><a href="tags.html">Tags</a></li>
+				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
+				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
+				<li><a href="help_us.html">Help Us Out</a></li>
+				<li><a href="#">My Account</a></li>
+			</ul>
+		</div>
+	</center>
+
+</body>
+</html>
