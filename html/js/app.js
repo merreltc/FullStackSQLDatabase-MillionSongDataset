@@ -134,3 +134,30 @@ function populateSelect(thisId){
 	}
 
 }
+
+function hide(divId)
+{
+	if(divId == "") {
+		return;
+	}
+	if($('#'+divId).is(":visible")) {
+		$("#"+divId).prop("disabled", false);
+		$("#"+divId).hide();
+	}
+}
+
+function show(divId)
+{
+
+	var newDiv = $('#'+divId).val();
+
+	if(newDiv == "") {
+		return;
+	}
+
+	if($('#'+newDiv).is(":hidden")) {
+		$("#"+newDiv).show();
+	}
+
+	$("#"+divId).prop("disabled", true);
+}

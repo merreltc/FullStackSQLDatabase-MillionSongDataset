@@ -15,35 +15,6 @@
 			document.getElementById('options').value = '';
 		}
 	</script>
-	<script>
-		function hide(divId)
-		{
-			if(divId == "") {
-				return;
-			}
-			if(document.getElementById(divId).style.display == 'block' || document.getElementById(divId).style.display == '') {
-				document.getElementById(divId).disabled = false;
-				document.getElementById(divId).style.display = 'none';
-			}
-		}
-	</script>
-	<script >
-		function show(divId)
-		{
-
-			var newDiv = document.getElementById(divId).value;
-
-			if(newDiv == "") {
-				return;
-			}
-
-			if(document.getElementById(newDiv).style.display == 'none') {
-				document.getElementById(newDiv).style.display = '';
-			}
-
-			document.getElementById(divId).disabled = true;
-		}
-	</script>
 </head>
 
 <body>
