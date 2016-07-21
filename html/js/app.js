@@ -161,3 +161,32 @@ function show(divId)
 
 	$("#"+divId).prop("disabled", true);
 }
+
+function showRecommendations(divId,extra) {
+	if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+        	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        		$('#'+divId).html(xmlhttp.responseText);
+        	}
+        };
+
+        switch(divId) {
+        	case "recommend-user":
+        	xmlhttp.open("GET","php/recommend-user.php",true);
+        	xmlhttp.send();
+        	break
+        	case "recommend-song":
+        	xmlhttp.open("GET","php/recommend-song.php?song="+extra,true);
+
+        	break;
+        	case "recommend-artist":
+        	xmlhttp.open("GET","php/recommend-artist.php?artist="+extra,true);
+        	break;
+        }
+    }

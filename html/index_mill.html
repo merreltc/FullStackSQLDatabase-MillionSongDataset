@@ -19,7 +19,7 @@
 	</script>
 </head>
 
-<body>
+<body onload="showRecommendations('recommend-user')">
 
 	<div class="callout large">
 		<div class="row column text-center">
@@ -33,7 +33,7 @@
 			<ul class="menu">
 				<li class="menu-text">Home</li>
 				<li><a href="tags.html">Tags</a></li>
-				<li><a href="recommend_eng.php">Recommendation Engine</a></li>
+				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
 				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
 				<li><a href="help_us.html">Help Us Out</a></li>
 				<li><a href="#">My Account</a></li>
@@ -88,29 +88,8 @@
 			<center><h5>Recommended for you!</h5></center>
 			<hr>
 
-			<div>
-				<table style="width:100%">
-					<tr>
-						<td><img class="thumbnail" src="http://placehold.it/50x50"></td>
-						<td><a href="#">Song 1</a></td>
-					</tr>
-					<tr>
-						<td><img class="thumbnail" src="http://placehold.it/50x50"></td>
-						<td><a href="#">Song 2</a></td>
-					</tr>
-					<tr>
-						<td><img class="thumbnail" src="http://placehold.it/50x50"></td>
-						<td><a href="#">Song 3</a></td>
-					</tr>
-					<tr>
-						<td><img class="thumbnail" src="http://placehold.it/50x50"></td>
-						<td><a href="#">Song 2</a></td>
-					</tr>
-					<tr>
-						<td><img class="thumbnail" src="http://placehold.it/50x50"></td>
-						<td><a href="#">Song 5</a></td>
-					</tr>
-				</table>
+			<div id="recommend-user">
+				<b>Recommendations will render here...</b>
 			</div>
 
 			<hr>
@@ -134,7 +113,6 @@
 			<li><a href="#"><div class="stat">3,489</div><span>Artists</span></a></li>
 			<li><a href="#"><div class="stat">44,602</div><span>Listeners</span></a></li>
 			<li><a href="#"><div class="stat">3 bil.</div><span>Tags</span></a></li>
-			<li><a href="#"><div class="stat">18</div><span>Useless Facts</span></a></li>
 		</ul>
 	</div>
 
@@ -145,7 +123,7 @@
 			<ul class="menu">
 				<li><a href="index_mill.html">Home</a></li>
 				<li><a href="tags.html">Tags</a></li>
-				<li><a href="recommend_eng.php">Recommendation Engine</a></li>
+				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
 				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
 				<li><a href="help_us.html">Help Us Out</a></li>
 				<li><a href="#">My Account</a></li>

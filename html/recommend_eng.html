@@ -1,0 +1,115 @@
+<html>
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Million Songs SQL | Recommendation Engine</title>
+	<link rel="stylesheet" type="text/css" href="millsongs.css">
+
+	<script>
+		function submit(formId) {
+			document.getElementById(formId).submit();
+
+			switch(formId){
+				case "song-rec":
+				var extra = document.getElementById("song").value;
+				showRecommendations("recommend-song",extra);
+				break;
+				case "artist-rec":
+				var extra = document.getElementById("artist").value;
+				showRecommendations("recommend-artist",extra);
+				break;
+			}
+		}
+	</script>
+</head>
+
+<body>
+	<div class="callout large">
+		<div class="row column text-center">
+			<h1>Million Songs SQL</h1>
+			<p class="lead">Everything you never needed to know about contemporary music.</p>
+		</div>
+	</div>
+
+	<div class="row">
+		<center>
+			<ul class="menu">
+				<li><a href="index_mill.html">Home</a></li>
+				<li><a href="tags.html">Tags</a></li>
+				<li class="menu-text">Recommendation Engine</li>
+				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
+				<li><a href="help_us.html">Help Us Out</a></li>
+				<li><a href="#">My Account</a></li>
+			</ul>
+		</center>
+	</div>
+
+	<hr>
+
+	<div class="row columns">
+		<div class="medium-6 columns">
+			<h5 style="text-align:center">Recommend Based on Song</h5>
+			<hr>
+
+			<form id="song-rec">
+				<input form="song-rec" type="text" id="song" maxlength="200" required>
+				<input form="song-rec" type='button' value='Recommend' name="submit-song" onclick='submit(this.form)' />
+			</form>
+
+			<hr>
+
+			<center>
+				<div id="recommend-song" class="row">Please input a song</div>
+			</center>
+
+			<br>
+		</div>
+
+		<div class="medium-6 columns">
+
+			<h5 style="text-align:center">Recommend Based on Artist</h5>
+			<hr>
+
+			<form id="artist-rec">
+				<input form="artist-rec" type="text" id="artist" maxlength="200" required>
+				<input form="artist-rec" type='button' value='Recommend' name="submit-artist" onclick='submit(this.form)' />
+			</form>
+			<hr>
+			<center>
+
+				<div id="recommend-artist" class="row">Please input an artist</div>
+			</center>
+		</div>
+
+		<hr>
+
+		<div class="row column">
+			<ul class="vertical medium-horizontal menu expanded text-center">
+				<li><a href="#"><div class="stat">9,988</div><span>Songs</span></a></li>
+				<li><a href="#"><div class="stat">3,489</div><span>Artists</span></a></li>
+				<li><a href="#"><div class="stat">44,602</div><span>Listeners</span></a></li>
+				<li><a href="#"><div class="stat">3 bil.</div><span>Tags</span></a></li>
+			</ul>
+		</div>
+
+		<hr>
+
+		<center>
+			<div class="row column">
+				<ul class="menu">
+					<li><a href="index_mill.html">Home</a></li>
+					<li><a href="tags.html">Tags</a></li>
+					<li><a href="recommend_eng.php">Recommendation Engine</a></li>
+					<li><a href="cacophony.html">Beautiful Cacophony</a></li>
+					<li><a href="help_us.html">Help Us Out</a></li>
+					<li><a href="#">My Account</a></li>
+				</ul>
+			</div>
+		</center>
+
+		<script src="js/jquery-3.0.0.js"></script>
+		<script src="js/app.js"></script>
+
+	</body>
+	</html>
