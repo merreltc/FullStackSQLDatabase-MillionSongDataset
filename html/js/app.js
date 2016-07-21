@@ -162,7 +162,7 @@ function show(divId)
 	$("#"+divId).prop("disabled", true);
 }
 
-function showRecommendations(divId,extra) {
+function showRecommendations(divId) {
 	if (window.XMLHttpRequest) {
             // code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
@@ -180,13 +180,26 @@ function showRecommendations(divId,extra) {
         	case "recommend-user":
         	xmlhttp.open("GET","php/recommend-user.php",true);
         	xmlhttp.send();
-        	break
-        	case "recommend-song":
-        	xmlhttp.open("GET","php/recommend-song.php?song="+extra,true);
-
         	break;
+
+        	case "recommend-song":
+        	var song = $('#song').val();
+        	if(song == ""){
+        		$('#'+divId).html('<b>Please input a song</b>');
+        		return;
+        	}
+        	xmlhttp.open("GET","php/recommend-song.php?song="+song,true);
+        	xmlhttp.send();
+        	break;
+
         	case "recommend-artist":
-        	xmlhttp.open("GET","php/recommend-artist.php?artist="+extra,true);
+        	var artist = $('#artist').val();
+        	if(artist == ""){
+        		$('#'+divId).html('<b>Please input an artist</b>');
+        		return;
+        	}
+        	xmlhttp.open("GET","php/recommend-artist.php?artist="+artist,true);
+        	xmlhttp.send();
         	break;
         }
     }
