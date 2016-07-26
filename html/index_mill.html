@@ -12,6 +12,7 @@
 			hide('perc-overall');
 			hide('perc-criteria');
 			hide('overtime-criteria');
+			hide('ot-genre-pop');
 
 			document.getElementById('constraint').disabled = false;
 			document.getElementById('constraint').value = '';
@@ -19,7 +20,7 @@
 	</script>
 </head>
 
-<body onload="showRecommendations('recommend-user')">
+<body>
 
 	<div class="callout large">
 		<div class="row column text-center">
@@ -34,7 +35,6 @@
 				<li class="menu-text">Home</li>
 				<li><a href="tags.html">Tags</a></li>
 				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
-				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
 				<li><a href="help_us.html">Help Us Out</a></li>
 				<li><a href="#">My Account</a></li>
 			</ul>
@@ -53,7 +53,10 @@
 			</select>
 
 			<!-- Loudness, Genre Popularity, Track Count -->
-			<select id="overtime-criteria" onchange="generatearea(this.value)" style="display:none"></select>
+			<select id="overtime-criteria" onchange="splitDropdown(this.id)" style="display:none"></select>
+
+			<!-- Genres -->
+			<select id="ot-genre-pop" onchange="generatearea(this.id, this.value)" style="display:none"></select>
 
 			<!-- Overall, By Year -->
 			<select id="perc-criteria" onchange="populateSelect(this.id);show(this.id)" style="display:none"></select>
@@ -109,10 +112,10 @@
 
 	<div class="row column">
 		<ul class="vertical medium-horizontal menu expanded text-center">
-			<li><a href="#"><div class="stat">9,988</div><span>Songs</span></a></li>
-			<li><a href="#"><div class="stat">3,489</div><span>Artists</span></a></li>
-			<li><a href="#"><div class="stat">44,602</div><span>Listeners</span></a></li>
-			<li><a href="#"><div class="stat">3 bil.</div><span>Tags</span></a></li>
+			<li><div id="song-stat" class="stat">------</div><span>Songs</span></li>
+			<li><div id="artist-stat" class="stat">------</div><span>Artists</span></li>
+			<li><div id="listener-stat" class="stat">------</div><span>Listeners</span></li>
+			<li><div id="tag-stat" class="stat">------</div><span>Tags</span></li>
 		</ul>
 	</div>
 
@@ -124,7 +127,6 @@
 				<li><a href="index_mill.html">Home</a></li>
 				<li><a href="tags.html">Tags</a></li>
 				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
-				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
 				<li><a href="help_us.html">Help Us Out</a></li>
 				<li><a href="#">My Account</a></li>
 			</ul>

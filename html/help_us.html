@@ -6,6 +6,8 @@
 	<link rel="stylesheet" type="text/css" href="millsongs.css">
 	<script>
 		function restart() {
+			hide('form-complete');
+			document.getElementById('form-complete').innerHTML = '';
 			hide('update-song');
 			document.getElementById('update-song').reset();
 			hide('add-song');
@@ -13,6 +15,62 @@
 
 			document.getElementById('options').disabled = false;
 			document.getElementById('options').value = '';
+		}
+
+		function modSong(action) {
+			var song;
+			var artist;
+			var genre;
+			var album;
+			var release_year;
+
+	        if (window.XMLHttpRequest) {
+	            // code for IE7+, Firefox, Chrome, Opera, Safari
+	            xmlhttp = new XMLHttpRequest();
+	        } else {
+	            // code for IE6, IE5
+	            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	        }
+	        xmlhttp.onreadystatechange = function() {
+	            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	                document.getElementById("form-complete").innerHTML = xmlhttp.responseText;
+	            }
+	        };
+
+	        switch(action) {
+	        	case "update":
+					song = document.getElementById('update-title').value;
+					artist = document.getElementById('update-artist').value;
+					genre = document.getElementById('update-genre').value;
+					album = document.getElementById('update-album').value;
+					release_year = document.getElementById('update-year').value;
+
+		        	xmlhttp.open("GET","php/update_song.php?song_val="+song+"&artist_val="+artist+"&genre_val="+
+		        		genre+"&album_val="+album+"&year_val="+release_year,true);
+		        	xmlhttp.send();
+
+					hide('update-song');
+					document.getElementById('update-song').reset();
+	        	break;
+
+	        	case "add":
+					song = document.getElementById('add-title').value;
+					artist = document.getElementById('add-artist').value;
+					genre = document.getElementById('add-genre').value;
+					album = document.getElementById('add-album').value;
+					release_year = document.getElementById('add-year').value;
+
+					xmlhttp.open("GET","php/add_song.php?song_val="+song+"&artist_val="+artist+"&genre_val="+
+		        		genre+"&album_val="+album+"&year_val="+release_year,true);
+		        	xmlhttp.send();
+
+		        	hide('add-song');
+					document.getElementById('add-song').reset();		
+	        	break;
+	        }
+
+
+		    document.getElementById('form-complete').style.display = '';
 		}
 	</script>
 </head>
@@ -32,7 +90,6 @@
 				<li><a href="index_mill.html">Home</a></li>
 				<li><a href="tags.html">Tags</a></li>
 				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
-				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
 				<li class="menu-text">Help Us Out</li>
 				<li><a href="#">My Account</a></li>
 			</ul>
@@ -58,16 +115,38 @@
 
 		<input type="button" value="Restart"  onclick="restart()">
 
-		<form id="update-song" style="display:none" action="php/update_song.php">
-			Title*<input type="text" name="song-title" maxlength="200" required>
+		<form id="update-song" style="display:none" action="javascript:modSong('update')">
+			Title*<input type="text" id="update-title" maxlength="200" required>
 
-			Artist<input type="text" name="artist" maxlength="200">
+			Artist<input type="text" id="update-artist" maxlength="200">
 
-			Genre<input type="text" name="genre" maxlength="100">
+			Genre<input type="text" id="update-genre" maxlength="100">
 
-			Album<input type="text" name="album" maxlength="200">
+			Album<input type="text" id="update-album" maxlength="200">
 
-			Release Year <input type="year" name="release_year">
+			Release Year <input type="year" id="update-year">
+
+			<br>
+			<br>
+			* Required field<br>
+			**Any non-required field left blank will not be considered.<br>
+			Have more advanced information on this song? <a href="#">Contact us!</a><br>
+
+			<input type="submit" value="Submit">
+			<input type="reset" value="Reset">
+		</form>
+
+		<form id="add-song" style="display:none" action="javascript:modSong('add')">
+
+			Title*<input type="text" id="add-title" maxlength="200" required>
+
+			Artist*<input type="text" id="add-artist" maxlength="200" required>
+
+			Genre<input type="text" id="add-genre" maxlength="100">
+
+			Album*<input type="text" id="add-album" maxlength="200" required>
+
+			Release Year <input type="year" id="add-year">
 
 			<br>
 			<br>
@@ -79,27 +158,7 @@
 			<input type="reset" value="Reset">
 		</form>
 
-		<form id="add-song" style="display:none" action="php/add_song.php">
-
-			Title*<input type="text" name="song-title" maxlength="200" required>
-
-			Artist*<input type="text" name="artist" maxlength="200" required>
-
-			Genre<input type="text" name="genre" maxlength="100">
-
-			Album*<input type="text" name="album" maxlength="200" required>
-
-			Release Year <input type="year" name="release_year">
-
-			<br>
-			<br>
-			* Required field<br>
-			**Any non-required field left blank will not be considered.<br>
-			Have more advanced information on this song? <a href="#">Contact us!</a><br>
-
-			<input type="submit" value="Submit">
-			<input type="reset" value="Reset">
-		</form>
+		<div id="form-complete">words go here</div>
 
 	</div>
 
@@ -107,10 +166,10 @@
 
 	<div class="row column">
 		<ul class="vertical medium-horizontal menu expanded text-center">
-			<li><a href="#"><div class="stat">9,988</div><span>Songs</span></a></li>
-			<li><a href="#"><div class="stat">3,489</div><span>Artists</span></a></li>
-			<li><a href="#"><div class="stat">44,602</div><span>Listeners</span></a></li>
-			<li><a href="#"><div class="stat">3 bil.</div><span>Tags</span></a></li>
+			<li><div id="song-stat" class="stat">------</div><span>Songs</span></li>
+			<li><div id="artist-stat" class="stat">------</div><span>Artists</span></li>
+			<li><div id="listener-stat" class="stat">------</div><span>Listeners</span></li>
+			<li><div id="tag-stat" class="stat">------</div><span>Tags</span></li>
 		</ul>
 	</div>
 
@@ -122,7 +181,6 @@
 				<li><a href="index_mill.html">Home</a></li>
 				<li><a href="tags.html">Tags</a></li>
 				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
-				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
 				<li><a href="help_us.html">Help Us Out</a></li>
 				<li><a href="#">My Account</a></li>
 			</ul>

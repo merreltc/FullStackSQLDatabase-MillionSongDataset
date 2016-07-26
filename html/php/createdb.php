@@ -102,8 +102,8 @@ if (mysqli_query($con, $sql)) {
 
 		// sql to create Favorite_Songs table
 $sql = "CREATE TABLE IF NOT EXISTS Favorite_Songs (
-listener int,
-song char(18),
+listener int NOT NULL,
+song char(18) NOT NULL,
 FOREIGN KEY (song) REFERENCES Song(echonest_id),
 FOREIGN KEY (listener) REFERENCES Listener(master_id),
 PRIMARY KEY(song, listener)
@@ -117,8 +117,8 @@ if (mysqli_query($con, $sql)) {
 
 // sql to create Listens_To_Artist table
 $sql = "CREATE TABLE IF NOT EXISTS Listens_To_Artist (
-listener int,
-artist char(18),
+listener int NOT NULL,
+artist char(18) NOT NULL,
 playcount int DEFAULT 1,
 FOREIGN KEY (artist) REFERENCES Artist(echonest_id),
 FOREIGN KEY (listener) REFERENCES Listener(master_id),
@@ -133,8 +133,8 @@ if (mysqli_query($con, $sql)) {
 
 // sql to create Listens_To_Song table
 $sql = "CREATE TABLE IF NOT EXISTS Listens_To_Song (
-listener int,
-song char(18),
+listener int NOT NULL,
+song char(18) NOT NULL,
 playcount int DEFAULT 1,
 FOREIGN KEY (song) REFERENCES Song(echonest_id),
 FOREIGN KEY (listener) REFERENCES Listener(master_id),
@@ -151,17 +151,10 @@ if (mysqli_query($con, $sql)) {
 // sql to create Song table
 $sql = "CREATE TABLE IF NOT EXISTS `Update-Song` (
 title varchar(200) NOT NULL,
-artist char(18) NULL,
+artist varchar(200) NULL,
 genre varchar(100) NULL,
 release_year YEAR NULL, 
 album varchar(200) NULL,
-loudness decimal(5,2) NULL,
-hotttnesss decimal(4,3) NULL,
-tempo float NULL,
-song_key int NULL,
-mode int NULL,
-start decimal(6,3) NULL,
-CONSTRAINT ck_hotttnesss CHECK (hotttnesss > 0 AND hotttnesss < 1),
 CONSTRAINT valid_year CHECK(release_year < YEAR(GETDATE())
 AND release_year > 1800));";
 
@@ -174,17 +167,10 @@ if (mysqli_query($con, $sql)) {
 // sql to create Song table
 $sql = "CREATE TABLE IF NOT EXISTS `Add-Song` (
 title varchar(200) NOT NULL,
-artist char(18) NOT NULL,
+artist varchar(200) NOT NULL,
 genre varchar(100) NULL,
 release_year YEAR NULL, 
 album varchar(200) NOT NULL,
-loudness decimal(5,2) NULL,
-hotttnesss decimal(4,3) NULL,
-tempo float NULL,
-song_key int NULL,
-mode int NULL,
-start decimal(6,3) NULL,
-CONSTRAINT ck_hotttnesss CHECK (hotttnesss > 0 AND hotttnesss < 1),
 CONSTRAINT valid_year CHECK(release_year < YEAR(GETDATE())
 AND release_year > 1800));";
 
@@ -192,6 +178,20 @@ if (mysqli_query($con, $sql)) {
 	echo "Table Add-Song created successfully\n";
 } else {
 	echo "Error creating Add-Song table: " . mysqli_error($con) . "\n";
+}
+
+// sql to create Tag table
+$sql = "CREATE TABLE IF NOT EXISTS `Pending-Tag` (
+song VARCHAR(200) NOT NULL,
+artist VARCHAR(200) NOT NULL,
+tag VARCHAR(200) NOT NULL,
+listener VARCHAR(200) NULL
+)";
+
+if (mysqli_query($con, $sql)) {
+	echo "Table Pending-Tag created successfully\n";
+} else {
+	echo "Error creating Pending-Tag table: " . mysqli_error($con) . "\n";
 }
 
 mysqli_close($con);

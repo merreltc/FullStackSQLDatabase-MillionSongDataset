@@ -57,6 +57,10 @@ years=new Array('2010','2009','2008','2007','2006','2005','2004','2003','2002','
 	'1939','1938','1937','1936','1935','1934','1933','1932','1931','1930',
 	'1929','1928','1927','1926');
 
+genres=new Array('Pop_Rock','Reggae','Stage','Blues','Religious','New Age','Rap','Country','Jazz',
+	'Vocal','Latin','Avant_Garde','International','Electronic','RnB','Comedy_Spoken','Folk',
+	'Easy_Listening','Children','Classical','Holiday');
+
 function populateSelect(thisId){
 	sel=$('#'+thisId).val();
 	$('#'+sel).html('');
@@ -78,6 +82,14 @@ function populateSelect(thisId){
 		}
 	}
 
+	// Genres
+	if(sel=='ot-genre-pop'){
+		$('#'+sel).append('<option style="display:none" selected="selected" value="">Select a genre:</option>');
+
+		genres.forEach(function(t) {
+			$('#'+sel).append('<option value="'+t+'">'+t+'</option>');
+		});
+	}
 
 	// Overall, By Year
 	if(sel=='perc-criteria'){
@@ -115,7 +127,6 @@ function populateSelect(thisId){
 		}
 	}
 
-
 	// Years
 	if(sel=='perc-year-genre-artist'){
 		$('#'+sel).append('<option style="display:none" selected="selected" value="">Select a year:</option>');
@@ -132,7 +143,6 @@ function populateSelect(thisId){
 			$('#'+sel).append('<option value="'+t+'">'+t+'</option>');
 		});
 	}
-
 }
 
 function hide(divId)
@@ -148,7 +158,6 @@ function hide(divId)
 
 function show(divId)
 {
-
 	var newDiv = $('#'+divId).val();
 
 	if(newDiv == "") {
@@ -162,44 +171,144 @@ function show(divId)
 	$("#"+divId).prop("disabled", true);
 }
 
-function showRecommendations(divId) {
-	if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function() {
-        	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        		$('#'+divId).html(xmlhttp.responseText);
-        	}
-        };
+function splitDropdown(divId) {
+	sel=$('#'+divId).val();
 
-        switch(divId) {
-        	case "recommend-user":
-        	xmlhttp.open("GET","php/recommend-user.php",true);
-        	xmlhttp.send();
-        	break;
+	switch(sel) {
+		case "ot-loudness":
+		generatearea(sel);
+		break;
+		case "ot-track-count":
+		generatearea(sel);
+		break;
+		case "ot-genre-pop":
+		populateSelect(divId);
+		show(divId);
+		break;
+	}
+}
 
-        	case "recommend-song":
-        	var song = $('#song').val();
-        	if(song == ""){
-        		$('#'+divId).html('<b>Please input a song</b>');
-        		return;
-        	}
-        	xmlhttp.open("GET","php/recommend-song.php?song="+song,true);
-        	xmlhttp.send();
-        	break;
-
-        	case "recommend-artist":
-        	var artist = $('#artist').val();
-        	if(artist == ""){
-        		$('#'+divId).html('<b>Please input an artist</b>');
-        		return;
-        	}
-        	xmlhttp.open("GET","php/recommend-artist.php?artist="+artist,true);
-        	xmlhttp.send();
-        	break;
-        }
+function showRecommendations(divId)
+{
+	if (window.XMLHttpRequest)
+	{
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
+    
+    xmlhttp.onreadystatechange = function() {
+    	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    		$('#'+divId).html(xmlhttp.responseText);
+    	}
+    };
+
+    switch(divId) {
+    	case "recommend-user":
+    	xmlhttp.open("GET","php/recommend_user.php",true);
+    	xmlhttp.send();
+    	break;
+
+    	case "recommend-song":
+    	var song = $('#song').val();
+
+    	if(song == "") {
+    		$('#'+divId).html('<b>Please input a song</b>');
+    		return;
+    	}
+
+    	xmlhttp.open("GET","php/recommend_song.php?song="+song,true);
+    	xmlhttp.send();
+    	break;
+
+    	case "recommend-artist":
+    	var artist = $('#artist').val();
+
+    	if(artist == "") {
+    		$('#'+divId).html('<b>Please input an artist</b>');
+    		return;
+    	}
+
+    	xmlhttp.open("GET","php/recommend_artist.php?artist="+artist,true);
+    	xmlhttp.send();
+    	break;
+    }
+}
+
+function showTagged(divId)
+{
+	if (window.XMLHttpRequest)
+	{
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xmlhttp.onreadystatechange = function() {
+    	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    		$('#'+divId).html(xmlhttp.responseText);
+    	}
+    };
+
+    switch(divId) {
+    	case "tagged-song":
+    	var tag = $('#song-tag').val();
+
+    	if(tag == "") {
+    		$('#'+divId).html('<b>Please input a tag</b>');
+    		return;
+    	}
+    	xmlhttp.open("GET","php/search_tag.php?search=song&tag="+tag,true);
+    	xmlhttp.send();
+    	break;
+
+    	case "tagged-artist":
+    	var tag = $('#artist-tag').val();
+
+    	if(tag == "") {
+    		$('#'+divId).html('<b>Please input a tag</b>');
+    		return;
+    	}
+
+    	xmlhttp.open("GET","php/search_tag.php?search=artist&tag="+tag,true);
+    	xmlhttp.send();
+    	break;
+    }
+}
+
+$(function() {
+	showRecommendations('recommend-user');
+
+	$.ajax({
+		type: "GET",
+		url: "http://localhost/php/update_stats.php",
+		data: {stat: 'song-stat'},
+		success: function(data) { $('#song-stat').html(data);}
+	});
+
+	$.ajax({
+		type: "GET",
+		url: "http://localhost/php/update_stats.php",
+		data: {stat: 'artist-stat'},
+		success: function(data) { $('#artist-stat').html(data);}
+	});
+
+	$.ajax({
+		type: "GET",
+		url: "http://localhost/php/update_stats.php",
+		data: {stat: 'listener-stat'},
+		success: function(data) { $('#listener-stat').html(data);}
+	});
+
+	$.ajax({
+		type: "GET",
+		url: "http://localhost/php/update_stats.php",
+		data: {stat: 'tag-stat'},
+		success: function(data) { $('#tag-stat').html(data);}
+	});
+
+});

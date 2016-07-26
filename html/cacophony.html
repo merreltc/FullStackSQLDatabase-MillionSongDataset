@@ -4,41 +4,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Million Songs SQL | Beautiful Cacophony</title>
 	<link rel="stylesheet" type="text/css" href="millsongs.css">
-	<script>
-		function restart() {
-
-		}
-	</script>
-	<script>
-		function hide(divId)
-		{
-			if(divId == "") {
-				return;
-			}
-			if(document.getElementById(divId).style.display == 'block' || document.getElementById(divId).style.display == '') {
-				document.getElementById(divId).disabled = false;
-				document.getElementById('constraint').value = '';
-				document.getElementById(divId).style.display = 'none';
-			}
-		}
-	</script>
-	<script >
-		function show(divId)
-		{
-
-			var newDiv = document.getElementById(divId).value;
-
-			if(newDiv == "") {
-				return;
-			}
-
-			if(document.getElementById(newDiv).style.display == 'none') {
-				document.getElementById(newDiv).style.display = '';
-			}
-
-			document.getElementById(divId).disabled = true;
-		}
-	</script>
 </head>
 
 <body>
@@ -69,10 +34,10 @@
 
 	<div class="row column">
 		<ul class="vertical medium-horizontal menu expanded text-center">
-			<li><a href="#"><div class="stat">9,988</div><span>Songs</span></a></li>
-			<li><a href="#"><div class="stat">3,489</div><span>Artists</span></a></li>
-			<li><a href="#"><div class="stat">44,602</div><span>Listeners</span></a></li>
-			<li><a href="#"><div class="stat">3 bil.</div><span>Tags</span></a></li>
+			<li><div id="song-stat" class="stat">------</div><span>Songs</span></li>
+			<li><div id="artist-stat" class="stat">------</div><span>Artists</span></li>
+			<li><div id="listener-stat" class="stat">------</div><span>Listeners</span></li>
+			<li><div id="tag-stat" class="stat">------</div><span>Tags</span></li>
 		</ul>
 	</div>
 
@@ -83,13 +48,16 @@
 			<ul class="menu">
 				<li><a href="index_mill.html">Home</a></li>
 				<li><a href="tags.html">Tags</a></li>
-				<li><a href="recommend_eng.php">Recommendation Engine</a></li>
+				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
 				<li><a href="cacophony.html">Beautiful Cacophony</a></li>
 				<li><a href="help_us.html">Help Us Out</a></li>
 				<li><a href="#">My Account</a></li>
 			</ul>
 		</div>
 	</center>
+
+	<script src="js/jquery-3.0.0.js"></script>
+	<script src="js/app.js"></script>
 
 </body>
 </html>

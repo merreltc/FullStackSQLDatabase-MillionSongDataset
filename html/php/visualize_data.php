@@ -2,7 +2,6 @@
   // require 'import.php'
   // include("fusioncharts.php");
 $sql = $_GET['sql_label'];
-$extra = intval($_GET['extra']);
 
 $con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
 if (!$con) {
@@ -45,6 +44,7 @@ switch ($sql) {
   break;
 
   case "perc-year-genre-song":
+  $extra = intval($_GET['extra']);
   $sql="SELECT DISTINCT genre, COUNT(*) as genre_count FROM Song WHERE genre IS NOT NULL AND release_year = '".$extra."' GROUP BY genre";
   $result = mysqli_query($con,$sql);
 
@@ -61,6 +61,7 @@ switch ($sql) {
   break;
 
   case "perc-year-genre-artist":
+  $extra = intval($_GET['extra']);
   $sql="SELECT DISTINCT genre, COUNT(*) as genre_count FROM Song s, Artist a WHERE genre IS NOT NULL AND s.artist = a.echonest_id AND s.release_year = '".$extra."' GROUP BY genre";
   $result = mysqli_query($con,$sql);
 
@@ -77,7 +78,7 @@ switch ($sql) {
 
   break;
 
-    case "ot-loudness":
+  case "ot-loudness":
   $sql="SELECT release_year, AVG(loudness) as avg_loudness FROM Song WHERE release_year <> 0 GROUP BY release_year";
   $result = mysqli_query($con,$sql);
 
@@ -94,8 +95,9 @@ switch ($sql) {
 
   break;
 
-    case "ot-genre-pop":
-  $sql="SELECT release_year, AVG(hotttnesss) AS avg_pop FROM Song WHERE release_year <> 0 AND genre = 'Pop_Rock' GROUP BY release_year";
+  case "ot-genre-pop":
+  $extra = $_GET['extra'];
+  $sql="SELECT release_year, AVG(hotttnesss) AS avg_pop FROM Song WHERE release_year <> 0 AND genre = '" . $extra . "' GROUP BY release_year";
   $result = mysqli_query($con,$sql);
 
     //initialize the array to store the processed data
@@ -111,8 +113,8 @@ switch ($sql) {
 
   break;
 
-    case "ot-track-count":
-   $sql="SELECT release_year, COUNT(*) AS year_count FROM Song WHERE release_year <> 0 GROUP BY release_year";
+  case "ot-track-count":
+  $sql="SELECT release_year, COUNT(*) AS year_count FROM Song WHERE release_year <> 0 GROUP BY release_year";
   $result = mysqli_query($con,$sql);
 
     //initialize the array to store the processed data
