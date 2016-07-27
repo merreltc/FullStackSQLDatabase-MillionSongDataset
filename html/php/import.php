@@ -27,6 +27,8 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		die('Database not connected');
 	}
 
+	echo "Import beginning...";
+
 	$songsartistsfile = fopen("/var/www/html/imports/SongsArtists.csv", "r") or die("Unable to open file! :(");
 
 	while(!feof($songsartistsfile)) {
@@ -40,22 +42,24 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 				$sql = "INSERT INTO Artist_Tag (artist, tag)
 					VALUES ('{$fields[12]}', '{$tag}');";
 				if(!mysqli_query($con, $sql)) {
-					echo "Error: " . $sql . "<br>" . $mysqli_error($con) . "\n";
+					echo "Error: " . $sql . "\n" . $mysqli_error($con) . "\n";
 				}
 			}
 		} else {
-		    if(!(strpos(mysqli_error($con), "Duplicate") !== false)) {
-			 echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		    if(!(strpos(mysqli_error($con), "key 'PRIMARY'") !== false)) {
+			 echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n";
 		    }
 		}
 		$sql = "INSERT INTO Song (echonest_id, track_id, sevendigital_id, title, artist, release_year, album, loudness, hotttnesss, tempo, song_key, mode, start)
 			VALUES ('{$fields[0]}', '{$fields[1]}', '{$fields[2]}', '{$fields[3]}', '{$fields[12]}', {$fields[4]}, '{$fields[5]}', {$fields[6]}, {$fields[7]}, {$fields[8]}, {$fields[9]}, {$fields[10]}, {$fields[11]})";
 	
 		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
-		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n";
 		}
 	}
 	fclose($songsartistsfile);
+
+	echo "Songs, Artists, and ArtistTags imported";
 
 	// $genresfile = fopen("/var/www/html/imports/Genres.tsv", "r") or die("Unable to open file! :(");
 
@@ -66,10 +70,11 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	// 		WHERE track_id = '{$fields[0]}';";
 
 	// 	if(!mysqli_query($con, $sql)) {
-	// 	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";	
+	// 	    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n";	
 	// 	}
 	// }
 	// fclose($genresfile);
+	// echo "Genres imported";
 
 	// $songsfile = fopen("/var/www/html/imports/SongListens.tsv", "r") or die("Unable to open file! :(");
 
@@ -79,7 +84,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	// 	 	VALUES ('{$fields[0]}', null, null)";
 
 	// 	if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
-	// 	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+	// 	    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n";
 	// 	}
 
 	// 	$sql = "SELECT master_id
@@ -92,10 +97,11 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	// 		VALUES ({$id}, '{$fields[1]}', {$fields[2]})";
 	
 	// 	if (!mysqli_query($con, $sql)) {
-	// 	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+	// 	    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n";
 	// 	}
 	// }
 	// fclose($songsfile);
+	// echo "Listeners and SongListens imported";
 	
 	// $artistsfile = fopen("/var/www/html/imports/ArtistListens.tsv", "r") or die("Unable to open file! :(");
 
@@ -106,7 +112,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	// 		VALUES (null, '{$fields[0]}', null)";
 
 	// 	if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
-	// 	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+	// 	    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n";
 	// 	}
 	     
 	// 	$sql = "SELECT master_id
@@ -125,10 +131,11 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	// 	 VALUES ({$id}, '{$artist}', {$fields[3]})";
 	
 	// 	if (!mysqli_query($con, $sql)) {
-	// 	    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+	// 	    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n";
 	// 	}
 	// }
 	// fclose($artistsfile);
+	// echo "Listeners and ArtistListens imported";
 
 	// $songtagfile = fopen("/var/www/html/imports/SongTags.tsv", "r") or die("Unable to open file! :(");
 
@@ -149,10 +156,11 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	// 		VALUES ('{$song_id}', '{$fields[0]}')";
 	
 	// 	if (!mysqli_query($con, $sql)) {
-	// 	    echo "Error: " . $sql . "<br>" . mysqli_error($con);
+	// 	    echo "Error: " . $sql . "\n" . mysqli_error($con);
 	// 	}
 	// }
 	// fclose($songtagfile);
+	// echo "SongTags imported";
 
  	mysqli_close($con);
 ?>

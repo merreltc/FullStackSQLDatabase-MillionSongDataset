@@ -22,7 +22,7 @@ mysqli_select_db($con, 'projecttest');
 // sql to create Artist table
 $sql = "CREATE TABLE IF NOT EXISTS Artist (
 echonest_id char(18) PRIMARY KEY,
-musicbrainz_id char(38) NOT NULL UNIQUE, 
+musicbrainz_id char(38) NULL UNIQUE, 
 name varchar(200) NOT NULL,
 hotttnesss decimal(4,3) NOT NULL,
 familiarity decimal(4,3) NOT NULL,
@@ -46,7 +46,7 @@ genre varchar(100) NULL,
 release_year YEAR NULL, 
 album varchar(200) NOT NULL,
 loudness decimal(5,2) NOT NULL,
-hotttnesss decimal(4,3) NOT NULL,
+hotttnesss decimal(4,3) NULL,
 tempo float NOT NULL,
 song_key int NOT NULL,
 mode int NOT NULL,
@@ -60,6 +60,15 @@ if (mysqli_query($con, $sql)) {
 	echo "Table Song created successfully\n";
 } else {
 	echo "Error creating Song table: " . mysqli_error($con) . "\n";
+}
+
+// sql to add index to Song table
+$sql = "CREATE INDEX year_index ON Song (release_year)";
+
+if (mysqli_query($con, $sql)) {
+	echo "Index for release_year on Song created successfully\n";
+} else {
+	echo "Error creating index for release_year on Song: " . mysqli_error($con) . "\n";
 }
 
 // sql to create Listener table
@@ -225,11 +234,25 @@ $sql = "CREATE TRIGGER songfix
 	END";
 
 if (mysqli_query($con, $sql)) {
-	echo "Trigger creation dope\n";
+	echo "Song fix trigger creation dope\n";
 } else {
 	echo "Error creating trigger: " . mysqli_error($con) . "\n";
 }
 
+$sql = "CREATE TRIGGER artistfix
+	BEFORE INSERT
+	ON Artist FOR EACH ROW
+	BEGIN
+		IF NEW.musicbrainz_id = '' THEN
+		SET NEW.musicbrainz_id = NULL;
+		END IF;
+	END";
+
+if (mysqli_query($con, $sql)) {
+	echo "Artist fix trigger creation dope\n";
+} else {
+	echo "Error creating trigger: " . mysqli_error($con) . "\n";
+}
 
 mysqli_close($con);
 ?>
