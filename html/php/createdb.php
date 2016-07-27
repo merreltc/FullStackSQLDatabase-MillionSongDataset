@@ -23,7 +23,7 @@ mysqli_select_db($con, 'projecttest');
 $sql = "CREATE TABLE IF NOT EXISTS Artist (
 echonest_id char(18) PRIMARY KEY,
 musicbrainz_id char(38) NULL UNIQUE, 
-name varchar(200) NOT NULL,
+name varchar(500) NOT NULL,
 hotttnesss decimal(4,3) NOT NULL,
 familiarity decimal(4,3) NOT NULL,
 CONSTRAINT ck_hotttnesss CHECK (hotttnesss > 0 AND hotttnesss < 1),
@@ -40,11 +40,11 @@ $sql = "CREATE TABLE IF NOT EXISTS Song (
 echonest_id char(18) PRIMARY KEY,
 track_id char(18) NOT NULL,
 sevendigital_id int NULL UNIQUE, 
-title varchar(200) NOT NULL,
+title varchar(500) NOT NULL,
 artist char(18) NOT NULL,
 genre varchar(100) NULL,
 release_year YEAR NULL, 
-album varchar(200) NOT NULL,
+album varchar(500) NOT NULL,
 loudness decimal(5,2) NOT NULL,
 hotttnesss decimal(4,3) NULL,
 tempo float NOT NULL,
@@ -98,7 +98,7 @@ if (mysqli_query($con, $sql)) {
 // sql to create Tag table
 $sql = "CREATE TABLE IF NOT EXISTS Tag (
 song char(18) NOT NULL,
-tag VARCHAR(200) NOT NULL,
+tag VARCHAR(500) NOT NULL,
 listener int NULL,
 FOREIGN KEY (song) REFERENCES Song(echonest_id),
 FOREIGN KEY (listener) REFERENCES Listener(master_id)
@@ -113,7 +113,7 @@ if (mysqli_query($con, $sql)) {
 // sql to create Artist_Tag table
 $sql = "CREATE TABLE IF NOT EXISTS Artist_Tag (
 artist  char(18) NOT NULL,
-tag VARCHAR(200) NOT NULL,
+tag VARCHAR(500) NOT NULL,
 listener int NULL,
 FOREIGN KEY (artist) REFERENCES Artist(echonest_id),
 FOREIGN KEY (listener) REFERENCES Listener(master_id)
@@ -175,11 +175,11 @@ if (mysqli_query($con, $sql)) {
 
 // sql to create Song table
 $sql = "CREATE TABLE IF NOT EXISTS `Update-Song` (
-title varchar(200) NOT NULL,
-artist varchar(200) NULL,
+title varchar(500) NOT NULL,
+artist varchar(500) NULL,
 genre varchar(100) NULL,
 release_year YEAR NULL, 
-album varchar(200) NULL,
+album varchar(500) NULL,
 CONSTRAINT valid_year CHECK(release_year < YEAR(GETDATE())
 AND release_year > 1800));";
 
@@ -191,11 +191,11 @@ if (mysqli_query($con, $sql)) {
 
 // sql to create Song table
 $sql = "CREATE TABLE IF NOT EXISTS `Add-Song` (
-title varchar(200) NOT NULL,
-artist varchar(200) NOT NULL,
+title varchar(500) NOT NULL,
+artist varchar(500) NOT NULL,
 genre varchar(100) NULL,
 release_year YEAR NULL, 
-album varchar(200) NOT NULL,
+album varchar(500) NOT NULL,
 CONSTRAINT valid_year CHECK(release_year < YEAR(GETDATE())
 AND release_year > 1800));";
 
@@ -207,10 +207,10 @@ if (mysqli_query($con, $sql)) {
 
 // sql to create Tag table
 $sql = "CREATE TABLE IF NOT EXISTS `Pending-Tag` (
-song VARCHAR(200) NOT NULL,
-artist VARCHAR(200) NOT NULL,
-tag VARCHAR(200) NOT NULL,
-listener VARCHAR(200) NULL
+song VARCHAR(500) NOT NULL,
+artist VARCHAR(500) NOT NULL,
+tag VARCHAR(500) NOT NULL,
+listener VARCHAR(500) NULL
 )";
 
 if (mysqli_query($con, $sql)) {

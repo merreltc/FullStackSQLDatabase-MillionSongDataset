@@ -27,7 +27,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		die('Database not connected');
 	}
 
-	echo "Import beginning...";
+	echo "Import beginning...\n";
 
 	$songsartistsfile = fopen("/var/www/html/imports/SongsArtists.csv", "r") or die("Unable to open file! :(");
 
@@ -59,7 +59,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	}
 	fclose($songsartistsfile);
 
-	echo "Songs, Artists, and ArtistTags imported";
+	echo "Songs, Artists, and ArtistTags imported\n";
 
 	// $genresfile = fopen("/var/www/html/imports/Genres.tsv", "r") or die("Unable to open file! :(");
 
@@ -74,7 +74,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	// 	}
 	// }
 	// fclose($genresfile);
-	// echo "Genres imported";
+	// echo "Genres imported\n";
 
 	// $songsfile = fopen("/var/www/html/imports/SongListens.tsv", "r") or die("Unable to open file! :(");
 
@@ -101,7 +101,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	// 	}
 	// }
 	// fclose($songsfile);
-	// echo "Listeners and SongListens imported";
+	// echo "Listeners and SongListens imported\n";
 	
 	// $artistsfile = fopen("/var/www/html/imports/ArtistListens.tsv", "r") or die("Unable to open file! :(");
 
@@ -135,7 +135,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	// 	}
 	// }
 	// fclose($artistsfile);
-	// echo "Listeners and ArtistListens imported";
+	// echo "Listeners and ArtistListens imported\n";
 
 	// $songtagfile = fopen("/var/www/html/imports/SongTags.tsv", "r") or die("Unable to open file! :(");
 
@@ -160,7 +160,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	// 	}
 	// }
 	// fclose($songtagfile);
-	// echo "SongTags imported";
+	// echo "SongTags imported\n";
 
  	mysqli_close($con);
 ?>
