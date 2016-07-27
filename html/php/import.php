@@ -51,7 +51,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Song (echonest_id, track_id, sevendigital_id, title, artist, release_year, album, loudness, hotttnesss, tempo, song_key, mode, start)
 			VALUES ('{$fields[0]}', '{$fields[1]}', '{$fields[2]}', '{$fields[3]}', '{$fields[12]}', {$fields[4]}, '{$fields[5]}', {$fields[6]}, {$fields[7]}, {$fields[8]}, {$fields[9]}, {$fields[10]}, {$fields[11]})";
 	
-		if (!mysqli_query($con, $sql)) {
+		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
 		}
 	}
@@ -65,9 +65,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 			SET genre = '{$fields[1]}'
 			WHERE track_id = '{$fields[0]}';";
 
-		if(mysqli_query($con, $sql)) {
-			echo "Genre added to Song tuple successfuly\n";
-		} else {
+		if(!mysqli_query($con, $sql)) {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";	
 		}
 	}
@@ -80,9 +78,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Listener (echonest_id, lastfm_sha, username)
 		 	VALUES ('{$fields[0]}', null, null)";
 
-		if (mysqli_query($con, $sql)) {
-		    echo "New record in Listener created successfully\n";
-		} else {
+		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
 		}
 
@@ -95,9 +91,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Listens_To_Song (listener, song, playcount)
 			VALUES ({$id}, '{$fields[1]}', {$fields[2]})";
 	
-		if (mysqli_query($con, $sql)) {
-		    echo "New record in Listens_To_Song created successfully\n";
-		} else {
+		if (!mysqli_query($con, $sql)) {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
 		}
 	}
@@ -111,9 +105,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Listener (echonest_id, lastfm_sha, username)
 			VALUES (null, '{$fields[0]}', null)";
 
-		if (mysqli_query($con, $sql)) {
-		    echo "New record in Listener created successfully\n";
-		} else {
+		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
 		}
 	     
@@ -132,9 +124,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Listens_To_Artist (listener, artist, playcount)
 		 VALUES ({$id}, '{$artist}', {$fields[3]})";
 	
-		if (mysqli_query($con, $sql)) {
-		    echo "New record  in Listens_To_Artist created successfully\n";
-		} else {
+		if (!mysqli_query($con, $sql)) {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
 		}
 	}
@@ -158,9 +148,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Tag (song, tag)
 			VALUES ('{$song_id}', '{$fields[0]}')";
 	
-		if (mysqli_query($con, $sql)) {
-		    echo "New recordin Tag created successfully\n";
-		} else {
+		if (!mysqli_query($con, $sql)) {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con);
 		}
 	}

@@ -209,5 +209,19 @@ if (mysqli_query($con, $sql)) {
 	echo "Error creating Pending-Tag table: " . mysqli_error($con) . "\n";
 }
 
+// various triggers that are needed
+$sql = "CREATE TRIGGER songfix
+	AFTER INSERT
+	ON Song FOR EACH ROW
+	BEGIN
+		IF NEW.release_year = 0 THEN
+		SET NEW.release_year = NULL
+		END IF
+
+		IF NEW.hotttnesss = 0 THEN
+		SET NEW.hotttnesss = NULL
+		END IF
+	END"
+
 mysqli_close($con);
 ?>
