@@ -11,7 +11,7 @@ $tag = $_GET['tag'];
 
 switch($search) {
 	case "song":
-	$sql="SELECT s.title, a.name, s.genre,s.album, s.release_year FROM Song s, Artist a WHERE s.artist = a.echonest_id AND title = 'Smile'";
+	$sql="SELECT s.title, a.name, s.genre, s.album, s.release_year FROM Song s, Artist a WHERE s.artist = a.echonest_id AND title = 'Smile'";
 	$result = mysqli_query($con,$sql);
 
 	if (mysqli_num_rows($result) > 0) {

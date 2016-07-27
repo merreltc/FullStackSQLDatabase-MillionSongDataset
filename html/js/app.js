@@ -256,10 +256,10 @@ function showTagged(divId)
 
     switch(divId) {
     	case "tagged-song":
-    	var tag = $('#song-tag').val();
+    	var tag = $('#song-search-tag').val();
 
     	if(tag == "") {
-    		$('#'+divId).html('<b>Please input a tag</b>');
+    		$('#'+divId).html('<b>Please input an tag</b>');
     		return;
     	}
     	xmlhttp.open("GET","php/search_tag.php?search=song&tag="+tag,true);

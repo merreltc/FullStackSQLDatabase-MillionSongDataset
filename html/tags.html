@@ -9,22 +9,27 @@
 			hide('form-complete');
 			document.getElementById('form-complete').value = "Words will go here.";
 			hide('tag-song');
+
 			document.getElementById('tag-song').reset();
+			
 			hide('search-song');
 			document.getElementById('song-tag').value = "";
+			document.getElementById('tagged-song').innerHTML = "<b>Please input a tag</b>";
+			
 			hide('search-artist');
 			document.getElementById('artist-tag').value = "";
+			document.getElementById('tagged-artist').innerHTML = "<b>Please input a tag</b>";
 
 			document.getElementById('options').disabled = false;
 			document.getElementById('options').value = '';
 		}
 
 		function tagSong() {
-			var song = document.getElementById('song-title').value;
-			var artist = document.getElementById('song-artist').value;
-			var tag = document.getElementById('song-tag').value;
+			var song = document.getElementById('title').value;
+			var artist = document.getElementById('artist').value;
+			var tag = document.getElementById('tag').value;
 
-	        if (window.XMLHttpRequest) {
+			if (window.XMLHttpRequest) {
 	            // code for IE7+, Firefox, Chrome, Opera, Safari
 	            xmlhttp = new XMLHttpRequest();
 	        } else {
@@ -32,129 +37,129 @@
 	            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	        }
 	        xmlhttp.onreadystatechange = function() {
-	            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-	                document.getElementById("form-complete").innerHTML = xmlhttp.responseText;
-	            }
+	        	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	        		document.getElementById("form-complete").innerHTML = xmlhttp.responseText;
+	        	}
 	        };
 
 	        xmlhttp.open("GET","php/tag_song.php?song_val="+song+"&artist_val="+artist+"&tag_val="+tag,true);
 	        xmlhttp.send();
 
-		    document.getElementById('form-complete').style.display = '';
+	        document.getElementById('form-complete').style.display = '';
 
-		    hide('tag-song');
-			document.getElementById('tag-song').reset();
-		}
+	        hide('tag-song');
+	        document.getElementById('tag-song').reset();
+	    }
 	</script>
 </head>
 
 <body>
 
-		<div class="callout large">
-			<div class="row column text-center">
-				<h1>Million Songs SQL</h1>
-				<p class="lead">Everything you never needed to know about contemporary music.</p>
-			</div>
+	<div class="callout large">
+		<div class="row column text-center">
+			<h1>Million Songs SQL</h1>
+			<p class="lead">Everything you never needed to know about contemporary music.</p>
 		</div>
+	</div>
 
-		<div class="row">
+	<div class="row">
+		<center>
+			<ul class="menu">
+				<li><a href="index_mill.html">Home</a></li>
+				<li class="menu-text">Tags</li>
+				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
+				<li><a href="help_us.html">Help Us Out</a></li>
+				<li><a href="#">My Account</a></li>
+			</ul>
+		</center>
+	</div>
+
+	<hr>
+
+	<div class="text-center">
+		<img class="thumbnail" src="http://placehold.it/1000x500">
+	</div>
+
+	<hr>
+	<div class="row">
+
+		<h5>What do you want to do?</h5>
+
+		<select id="options" onchange="show(this.id)" style="width:27%">
+			<option value="" style="display:none" selected="selected">Pick an option:</option>
+			<option value="tag-song">Tag a Song</option>
+			<option value="search-song">Search for Songs</option>
+			<option value="search-artist">Search for Artists</option>
+		</select>
+
+		<input type="button" value="Restart"  onclick="restart()">
+
+		<form id="tag-song" style="display:none" action="javascript:tagSong()">
+			Title*<input type="text" id="title" maxlength="200" required>
+			Artist*<input type="text" id="artist" maxlength="200" required>
+			Tag*<input type="text" id="tag" maxlength="200" required>
+			* Required field<br>
+			<input type="submit" value="Submit">
+			<input type="reset" value="Reset">
+		</form>
+
+		<div id="form-complete" style="display:none">Words will go here</div>
+
+		<div id="search-song" style="display:none">
+
+			<input type="text" id="song-tag" maxlength="200">
+			<input type="button" value="Display" onclick="showTagged('tagged-song')">
+
+			<hr>
+
 			<center>
-				<ul class="menu">
-					<li><a href="index_mill.html">Home</a></li>
-					<li class="menu-text">Tags</li>
-					<li><a href="recommend_eng.html">Recommendation Engine</a></li>
-					<li><a href="help_us.html">Help Us Out</a></li>
-					<li><a href="#">My Account</a></li>
-				</ul>
+				<div id="tagged-song" class="row"><b>Please input a tag</b></div>
 			</center>
-		</div>
-
-		<hr>
-
-		<div class="text-center">
-			<img class="thumbnail" src="http://placehold.it/1000x500">
-		</div>
-
-		<hr>
-		<div class="row">
-
-			<h5>What do you want to do?</h5>
-
-			<select id="options" onchange="show(this.id)" style="width:27%">
-				<option value="" style="display:none" selected="selected">Pick an option:</option>
-				<option value="tag-song">Tag a Song</option>
-				<option value="search-song">Search for Songs</option>
-				<option value="search-artist">Search for Artists</option>
-			</select>
-
-			<input type="button" value="Restart"  onclick="restart()">
-
-			<form id="tag-song" style="display:none" action="javascript:tagSong()">
-				Title*<input type="text" id="song-title" maxlength="200" required>
-				Artist*<input type="text" id="song-artist" maxlength="200" required>
-				Tag*<input type="text" id="song-tag" maxlength="200" required>
-				* Required field<br>
-				<input type="submit" value="Submit">
-				<input type="reset" value="Reset">
-			</form>
-
-			<div id="form-complete" style="display:none">Words will go here</div>
-
-			<div id="search-song" style="display:none">
-
-				<input type="text" id="song-tag" maxlength="200">
-				<input type="button" value="Display" onclick="showTagged('tagged-song')">
-
-				<hr>
-
-				<center>
-					<div id="tagged-song" class="row"><b>Please input a tag</b></div>
-				</center>
-
-			</div>
-
-			<div id="search-artist" style="display:none">
-
-				<input type="text" id="artist-tag" maxlength="200">
-				<input type="button" value="Display" onclick="showTagged('tagged-artist')">
-
-				<hr>
-
-				<center>
-					<div id="tagged-artist" class="row"><b>Please input a tag</b></div>
-				</center>
-
-			</div>
 
 		</div>
 
-		<hr>
+		<div id="search-artist" style="display:none">
 
+			<input type="text" id="artist-tag" maxlength="200">
+			<input type="button" value="Display" onclick="showTagged('tagged-artist')">
+
+			<hr>
+
+			<center>
+				<div id="tagged-artist" class="row"><b>Please input a tag</b></div>
+			</center>
+
+		</div>
+
+	</div>
+
+	<hr>
+
+	<div class="row column">
+		<ul class="vertical medium-horizontal menu expanded text-center">
+			<li><div id="song-stat" class="stat">------</div><span>Songs</span></li>
+			<li><div id="artist-stat" class="stat">------</div><span>Artists</span></li>
+			<li><div id="listener-stat" class="stat">------</div><span>Listeners</span></li>
+			<li><div id="tag-stat" class="stat">------</div><span>Tags</span></li>
+		</ul>
+	</div>
+
+	<hr>
+
+	<center>
 		<div class="row column">
-			<ul class="vertical medium-horizontal menu expanded text-center">
-				<li><div id="song-stat" class="stat">------</div><span>Songs</span></li>
-				<li><div id="artist-stat" class="stat">------</div><span>Artists</span></li>
-				<li><div id="listener-stat" class="stat">------</div><span>Listeners</span></li>
-				<li><div id="tag-stat" class="stat">------</div><span>Tags</span></li>
+			<ul class="menu">
+				<li><a href="index_mill.html">Home</a></li>
+				<li><a href="tags.html">Tags</a></li>
+				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
+				<li><a href="help_us.html">Help Us Out</a></li>
+				<li><a href="#">My Account</a></li>
 			</ul>
 		</div>
+	</center>
 
-		<hr>
+	<script src="js/jquery-3.0.0.js"></script>
+	<script src="js/app.js"></script>
 
-		<center>
-			<div class="row column">
-				<ul class="menu">
-					<li><a href="index_mill.html">Home</a></li>
-					<li><a href="tags.html">Tags</a></li>
-					<li><a href="recommend_eng.html">Recommendation Engine</a></li>
-					<li><a href="help_us.html">Help Us Out</a></li>
-					<li><a href="#">My Account</a></li>
-				</ul>
-			</div>
-		</center>
-
-		<script src="js/jquery-3.0.0.js"></script>
-		<script src="js/app.js"></script>
-
-	</body>
-	</html>
+</body>
+</html>
