@@ -100,6 +100,21 @@ if (mysqli_query($con, $sql)) {
 	echo "Error creating Tag table: " . mysqli_error($con) . "\n";
 }
 
+// sql to create Artist_Tag table
+$sql = "CREATE TABLE IF NOT EXISTS Artist_Tag (
+artist  char(18) NOT NULL,
+tag VARCHAR(200) NOT NULL,
+listener int NULL,
+FOREIGN KEY (artist) REFERENCES Artist(echonest_id),
+FOREIGN KEY (listener) REFERENCES Listener(master_id)
+)";
+
+if (mysqli_query($con, $sql)) {
+	echo "Table Tag created successfully\n";
+} else {
+	echo "Error creating Tag table: " . mysqli_error($con) . "\n";
+}
+
 		// sql to create Favorite_Songs table
 $sql = "CREATE TABLE IF NOT EXISTS Favorite_Songs (
 listener int NOT NULL,
