@@ -3,6 +3,8 @@
 
 function sanitizeField($field) {
 	$san = str_replace("'", "''", $field);
+	$san = str_replace("[", "", $san);
+	$san = str_replace("]", "", $san);
 	$san = rtrim($san);
 	return $san;
 }
@@ -25,34 +27,31 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		die('Database not connected');
 	}
 
-	$songsartistsfile = fopen("/var/www/html/imports/SongsArtists.tsv", "r") or die("Unable to open file! :(");
+	$songsartistsfile = fopen("/var/www/html/imports/SongsArtists.csv", "r") or die("Unable to open file! :(");
 
 	while(!feof($songsartistsfile)) {
-		$fields = sanitizeArray(explode("\t", fgets($songsartistsfile)));
+		$fields = sanitizeArray(explode(",", fgets($songsartistsfile), 18));
 		$sql = "INSERT INTO Artist (echonest_id, musicbrainz_id, name, hotttnesss, familiarity)
 			 VALUES ('{$fields[12]}', '{$fields[13]}', '{$fields[14]}', {$fields[15]}, {$fields[16]})";
 
 		if (mysqli_query($con, $sql)) {
-			echo "New record in Artist created successfully\n";
-			$tags = sanitizeArray(array_merge(explode(",", substr($fields[17], 1, -1)), explode(",", substr($fields[18], 1, -1))));
-			foreach($tags as $value) {
+			$tags = sanitizeArray(explode(",", $fields[17]));
+			foreach($tags as $tag) {
 				$sql = "INSERT INTO Artist_Tag (artist, tag)
 					VALUES ('{$fields[12]}', '{$tag}');";
-				if(mysqli_query($con, $sql)) {
-					echo "New record in Artist_Tag created succesfully\n";
-				} else {
+				if(!mysqli_query($con, $sql)) {
 					echo "Error: " . $sql . "<br>" . $mysqli_error($con) . "\n";
 				}
 			}
 		} else {
-		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		    if(!(strpos(mysqli_error($con), "Duplicate") !== false)) {
+			 echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
+		    }
 		}
 		$sql = "INSERT INTO Song (echonest_id, track_id, sevendigital_id, title, artist, release_year, album, loudness, hotttnesss, tempo, song_key, mode, start)
 			VALUES ('{$fields[0]}', '{$fields[1]}', '{$fields[2]}', '{$fields[3]}', '{$fields[12]}', {$fields[4]}, '{$fields[5]}', {$fields[6]}, {$fields[7]}, {$fields[8]}, {$fields[9]}, {$fields[10]}, {$fields[11]})";
 	
-		if (mysqli_query($con, $sql)) {
-		    echo "New record in Song created successfully\n";
-		} else {
+		if (!mysqli_query($con, $sql)) {
 		    echo "Error: " . $sql . "<br>" . mysqli_error($con) . "\n";
 		}
 	}
