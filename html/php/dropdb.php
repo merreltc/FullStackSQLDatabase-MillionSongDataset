@@ -1,6 +1,6 @@
 <?php
 
-$con = mysqli_connect('localhost','root','10826294');
+$con = mysqli_connect('localhost','superuser','superP@$$123');
  	if (!$con) {
  		die('Could not connect: ' . mysqli_error($con) . "\n");
  	}

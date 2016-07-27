@@ -19,32 +19,6 @@ if (!$db_selected) {
 
 mysqli_select_db($con, 'projecttest');
 
-// sql to create Song table
-$sql = "CREATE TABLE IF NOT EXISTS Song (
-echonest_id char(18) PRIMARY KEY,
-track_id char(18) NOT NULL,
-sevendigital_id int NULL UNIQUE, 
-title varchar(200) NOT NULL,
-artist char(18) NOT NULL,
-genre varchar(100) NULL,
-release_year YEAR NOT NULL, 
-album varchar(200) NOT NULL,
-loudness decimal(5,2) NOT NULL,
-hotttnesss decimal(4,3) NOT NULL,
-tempo float NOT NULL,
-song_key int NOT NULL,
-mode int NOT NULL,
-start decimal(6,3) NOT NULL,
-CONSTRAINT ck_hotttnesss CHECK (hotttnesss > 0 AND hotttnesss < 1),
-CONSTRAINT valid_year CHECK(release_year < YEAR(GETDATE())
-AND release_year > 1800));";
-
-if (mysqli_query($con, $sql)) {
-	echo "Table Song created successfully\n";
-} else {
-	echo "Error creating Song table: " . mysqli_error($con) . "\n";
-}
-
 // sql to create Artist table
 $sql = "CREATE TABLE IF NOT EXISTS Artist (
 echonest_id char(18) PRIMARY KEY,
@@ -59,6 +33,33 @@ if (mysqli_query($con, $sql)) {
 	echo "Table Artist created successfully\n";
 } else {
 	echo "Error creating Artist table: " . mysqli_error($con) . "\n";
+}
+
+// sql to create Song table
+$sql = "CREATE TABLE IF NOT EXISTS Song (
+echonest_id char(18) PRIMARY KEY,
+track_id char(18) NOT NULL,
+sevendigital_id int NULL UNIQUE, 
+title varchar(200) NOT NULL,
+artist char(18) NOT NULL,
+genre varchar(100) NULL,
+release_year YEAR NULL, 
+album varchar(200) NOT NULL,
+loudness decimal(5,2) NOT NULL,
+hotttnesss decimal(4,3) NOT NULL,
+tempo float NOT NULL,
+song_key int NOT NULL,
+mode int NOT NULL,
+start decimal(6,3) NOT NULL,
+FOREIGN KEY (artist) REFERENCES Artist(echonest_id),
+CONSTRAINT ck_hotttnesss CHECK (hotttnesss > 0 AND hotttnesss < 1),
+CONSTRAINT valid_year CHECK(release_year < YEAR(GETDATE())
+AND release_year > 1800));";
+
+if (mysqli_query($con, $sql)) {
+	echo "Table Song created successfully\n";
+} else {
+	echo "Error creating Song table: " . mysqli_error($con) . "\n";
 }
 
 // sql to create Listener table
@@ -211,17 +212,24 @@ if (mysqli_query($con, $sql)) {
 
 // various triggers that are needed
 $sql = "CREATE TRIGGER songfix
-	AFTER INSERT
+	BEFORE INSERT
 	ON Song FOR EACH ROW
 	BEGIN
 		IF NEW.release_year = 0 THEN
-		SET NEW.release_year = NULL
-		END IF
+		SET NEW.release_year = NULL;
+		END IF;
 
 		IF NEW.hotttnesss = 0 THEN
-		SET NEW.hotttnesss = NULL
-		END IF
-	END"
+		SET NEW.hotttnesss = NULL;
+		END IF;
+	END";
+
+if (mysqli_query($con, $sql)) {
+	echo "Trigger creation dope\n";
+} else {
+	echo "Error creating trigger: " . mysqli_error($con) . "\n";
+}
+
 
 mysqli_close($con);
 ?>
