@@ -7,7 +7,16 @@ if (!$con) {
 }
 
 mysqli_select_db($con,'projecttest');
-$sql="SELECT s.title, a.name, s.genre,s.album, s.release_year FROM Song s, Artist a WHERE s.artist = a.echonest_id AND title = '".$song."'";
+$sql = "SELECT s.title, a.name, s.genre, s.album, s.release_year, SUM(l.playcount) AS Weight
+	FROM Song AS s, Listens_To_Song AS l, Artist AS a
+	WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND l.listener IN (
+		SELECT DISTINCT listener
+		FROM Listens_To_Song
+		WHERE song IN (	SELECT echonest_id
+				FROM Song
+				WHERE title LIKE '%{$songname}%'))
+	GROUP BY s.title, a.name, s.genre, s.album, s.release_year
+	ORDER BY Weight";
 $result = mysqli_query($con,$sql);
 
 if (mysqli_num_rows($result) > 0) {
