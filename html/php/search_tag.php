@@ -40,14 +40,13 @@ switch($search) {
 	break;
 
 	case "artist":
-	$sql="SELECT * FROM Artist WHERE name = 'Delroy Wilson'";
+	$sql="SELECT DISTINCT a.name, a.hotttnesss, a.familiarity FROM Artist_Tag at, Artist a WHERE at.artist = a.echonest_id AND at.tag LIKE '%".$tag."%'";
 	$result = mysqli_query($con,$sql);
 
 	if (mysqli_num_rows($result) > 0) {
-		echo "<table>
+		echo "<p>Artists tagged with: <b>".$tag."</b></p>
+		<table>
 		<tr>
-			<th>Echonest ID</th>
-			<th>MusicBrainz ID</th>
 			<th>Name</th>
 			<th>Hotttnesss</th>
 			<th>Familiarity</th>
@@ -55,8 +54,6 @@ switch($search) {
 
 		while($row = mysqli_fetch_array($result)) {
 			echo "<tr>";
-			echo "<td>" . $row['echonest_id'] . "</td>";
-			echo "<td>" . $row['musicbrainz_id'] . "</td>";
 			echo "<td>" . $row['name'] . "</td>";
 			echo "<td>" . $row['hotttnesss'] . "</td>";
 			echo "<td>" . $row['familiarity'] . "</td>";

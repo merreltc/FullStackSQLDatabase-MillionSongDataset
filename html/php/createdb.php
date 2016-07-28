@@ -112,7 +112,7 @@ if (mysqli_query($con, $sql)) {
 
 // sql to create Artist_Tag table
 $sql = "CREATE TABLE IF NOT EXISTS Artist_Tag (
-artist  char(18) NOT NULL,
+artist char(18) NOT NULL,
 tag VARCHAR(500) NOT NULL,
 listener int NULL,
 FOREIGN KEY (artist) REFERENCES Artist(echonest_id),

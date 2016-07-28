@@ -1,9 +1,7 @@
 <?php
-  // require 'import.php'
-  // include("fusioncharts.php");
 $sql = $_GET['sql_label'];
 
-$con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
+$con = mysqli_connect("localhost",'superuser','superP@$$123','testdb');
 if (!$con) {
   die('Could not connect: ' . mysqli_error($con));
 }
