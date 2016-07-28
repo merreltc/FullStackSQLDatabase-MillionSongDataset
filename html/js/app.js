@@ -280,35 +280,85 @@ function showTagged(divId)
     }
 }
 
+function showStat(divId)
+{
+	if (window.XMLHttpRequest)
+	{
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xmlhttp.onreadystatechange = function() {
+    	if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    		$('#'+divId).html(xmlhttp.responseText);
+    	}
+    };
+
+    switch(divId) {
+    	case "song-search":
+    	var name = $('#song').val();
+
+    	if(name == "") {
+    		$('#'+divId).html('<b>Please input a song</b>');
+    		return;
+    	}
+    	xmlhttp.open("GET","php/search_stat.php?search=song&name="+name,true);
+    	xmlhttp.send();
+    	break;
+
+    	case "artist-search":
+    	var name = $('#artist').val();
+
+    	if(name == "") {
+    		$('#'+divId).html('<b>Please input an artist</b>');
+    		return;
+    	}
+
+    	xmlhttp.open("GET","php/search_stat.php?search=artist&name="+name,true);
+    	xmlhttp.send();
+    	break;
+    }
+}
+
 $(function() {
 	showRecommendations('recommend-user');
 
 	$.ajax({
 		type: "GET",
-		url: "http://localhost/php/update_stats.php",
+		url: "php/update_stats.php",
 		data: {stat: 'song-stat'},
 		success: function(data) { $('#song-stat').html(data);}
 	});
 
 	$.ajax({
 		type: "GET",
-		url: "http://localhost/php/update_stats.php",
+		url: "php/update_stats.php",
 		data: {stat: 'artist-stat'},
 		success: function(data) { $('#artist-stat').html(data);}
 	});
 
 	$.ajax({
 		type: "GET",
-		url: "http://localhost/php/update_stats.php",
+		url: "php/update_stats.php",
 		data: {stat: 'listener-stat'},
 		success: function(data) { $('#listener-stat').html(data);}
 	});
 
 	$.ajax({
 		type: "GET",
-		url: "http://localhost/php/update_stats.php",
-		data: {stat: 'tag-stat'},
-		success: function(data) { $('#tag-stat').html(data);}
+		url: "php/update_stats.php",
+		data: {stat: 'song-tag-stat'},
+		success: function(data) { $('#song-tag-stat').html(data);}
+	});
+
+		$.ajax({
+		type: "GET",
+		url: "php/update_stats.php",
+		data: {stat: 'artist-tag-stat'},
+		success: function(data) { $('#artist-tag-stat').html(data);}
 	});
 
 });

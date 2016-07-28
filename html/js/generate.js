@@ -1,7 +1,7 @@
 $(function() {
 	$.ajax({
 
-		url: 'http://localhost/php/visualize_data.php',
+		url: 'php/visualize_data.php',
 		type: 'GET',
 		success: function(data) {
 
@@ -71,7 +71,7 @@ function generatepi(sql,extra) {
 		break;
 	}
 	$.ajax({
-		url: 'http://localhost/php/visualize_data.php',
+		url: 'php/visualize_data.php',
 		type: 'GET',
 		data: {sql_label: sql_type, extra: extra_data},
 		success: function(data) {
@@ -136,7 +136,7 @@ function generatearea(sql,extra) {
 		break;
 	}
 	$.ajax({
-		url: 'http://localhost/php/visualize_data.php',
+		url: 'php/visualize_data.php',
 		type: 'GET',
 		data: {sql_label: sql_type, extra: extra_data},
 		success: function(data) {

@@ -22,7 +22,7 @@ mysqli_select_db($con, 'projecttest');
 // sql to create Artist table
 $sql = "CREATE TABLE IF NOT EXISTS Artist (
 echonest_id char(18) PRIMARY KEY,
-musicbrainz_id char(38) NULL UNIQUE, 
+musicbrainz_id char(38) NULL, 
 name varchar(500) NOT NULL,
 hotttnesss decimal(4,3) NOT NULL,
 familiarity decimal(4,3) NOT NULL,
@@ -69,6 +69,15 @@ if (mysqli_query($con, $sql)) {
 	echo "Index for release_year on Song created successfully\n";
 } else {
 	echo "Error creating index for release_year on Song: " . mysqli_error($con) . "\n";
+}
+
+// sql to add index to Song table
+$sql = "CREATE UNIQUE INDEX trackid_index ON Song (track_id)";
+
+if (mysqli_query($con, $sql)) {
+	echo "Index for track_id on Song created successfully\n";
+} else {
+	echo "Error creating index for track_id on Song: " . mysqli_error($con) . "\n";
 }
 
 // sql to create Listener table
@@ -120,9 +129,9 @@ FOREIGN KEY (listener) REFERENCES Listener(master_id)
 )";
 
 if (mysqli_query($con, $sql)) {
-	echo "Table Tag created successfully\n";
+	echo "Table Artist_Tag created successfully\n";
 } else {
-	echo "Error creating Tag table: " . mysqli_error($con) . "\n";
+	echo "Error creating Artist_Tag table: " . mysqli_error($con) . "\n";
 }
 
 		// sql to create Favorite_Songs table
@@ -203,20 +212,6 @@ if (mysqli_query($con, $sql)) {
 	echo "Table Add-Song created successfully\n";
 } else {
 	echo "Error creating Add-Song table: " . mysqli_error($con) . "\n";
-}
-
-// sql to create Tag table
-$sql = "CREATE TABLE IF NOT EXISTS `Pending-Tag` (
-song VARCHAR(500) NOT NULL,
-artist VARCHAR(500) NOT NULL,
-tag VARCHAR(500) NOT NULL,
-listener VARCHAR(500) NULL
-)";
-
-if (mysqli_query($con, $sql)) {
-	echo "Table Pending-Tag created successfully\n";
-} else {
-	echo "Error creating Pending-Tag table: " . mysqli_error($con) . "\n";
 }
 
 // various triggers that are needed

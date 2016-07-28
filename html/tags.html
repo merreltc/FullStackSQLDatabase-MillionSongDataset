@@ -8,9 +8,12 @@
 		function restart() {
 			hide('form-complete');
 			document.getElementById('form-complete').value = "Words will go here.";
-			hide('tag-song');
 
+			hide('tag-song');
 			document.getElementById('tag-song').reset();
+
+			hide('tag-artist');
+			document.getElementById('tag-artist').reset();
 			
 			hide('search-song');
 			document.getElementById('song-tag').value = "";
@@ -24,7 +27,8 @@
 			document.getElementById('options').value = '';
 		}
 
-		function tagSong() {
+		function tagSong(type) {
+			var tag_type = type;
 			var song = document.getElementById('title').value;
 			var artist = document.getElementById('artist').value;
 			var tag = document.getElementById('tag').value;
@@ -42,8 +46,16 @@
 	        	}
 	        };
 
-	        xmlhttp.open("GET","php/tag_song.php?song_val="+song+"&artist_val="+artist+"&tag_val="+tag,true);
-	        xmlhttp.send();
+	        switch(tag_type) {
+	        	case "song":
+	        	xmlhttp.open("GET","php/try_tag.php?type="+tag_type+"&song_val="+song+"&tag_val="+tag,true);
+	        	xmlhttp.send();
+	        	break;
+	        	case "artist":
+	        	xmlhttp.open("GET","php/try_tag.php?type="+tag_type+"&artist_val="+artist+"&tag_val="+tag,true);
+	        	xmlhttp.send();
+	        	break;
+	        }
 
 	        document.getElementById('form-complete').style.display = '';
 
@@ -69,6 +81,7 @@
 				<li class="menu-text">Tags</li>
 				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
 				<li><a href="help_us.html">Help Us Out</a></li>
+				<li><a href="search.html">Search Stats</a></li>
 			</ul>
 		</center>
 	</div>
@@ -87,14 +100,22 @@
 		<select id="options" onchange="show(this.id)" style="width:27%">
 			<option value="" style="display:none" selected="selected">Pick an option:</option>
 			<option value="tag-song">Tag a Song</option>
+			<option value="tag-artist">Tag an Artist</option>
 			<option value="search-song">Search for Songs</option>
 			<option value="search-artist">Search for Artists</option>
 		</select>
 
 		<input type="button" value="Restart"  onclick="restart()">
 
-		<form id="tag-song" style="display:none" action="javascript:tagSong()">
+		<form id="tag-song" style="display:none" action="javascript:tag('song')">
 			Title*<input type="text" id="title" maxlength="200" required>
+			Tag*<input type="text" id="tag" maxlength="200" required>
+			* Required field<br>
+			<input type="submit" value="Submit">
+			<input type="reset" value="Reset">
+		</form>
+
+		<form id="tag-artist" style="display:none" action="javascript:tag('artist')">
 			Artist*<input type="text" id="artist" maxlength="200" required>
 			Tag*<input type="text" id="tag" maxlength="200" required>
 			* Required field<br>
@@ -139,7 +160,8 @@
 			<li><div id="song-stat" class="stat">------</div><span>Songs</span></li>
 			<li><div id="artist-stat" class="stat">------</div><span>Artists</span></li>
 			<li><div id="listener-stat" class="stat">------</div><span>Listeners</span></li>
-			<li><div id="tag-stat" class="stat">------</div><span>Tags</span></li>
+			<li><div id="song-tag-stat" class="stat">------</div><span>Song Tags</span></li>
+			<li><div id="artist-tag-stat" class="stat">------</div><span>Artist Tags</span></li>
 		</ul>
 	</div>
 
@@ -152,6 +174,7 @@
 				<li><a href="tags.html">Tags</a></li>
 				<li><a href="recommend_eng.html">Recommendation Engine</a></li>
 				<li><a href="help_us.html">Help Us Out</a></li>
+				<li><a href="search.html">Search Stats</a></li>
 			</ul>
 		</div>
 	</center>

@@ -10,7 +10,7 @@ mysqli_select_db($con,'projecttest');
 
 switch($stat) {
   case "song-stat":
-  $sql="SELECT COUNT(*) AS count FROM Song";
+  $sql="SELECT COUNT(title) AS count FROM Song";
   break;
 
   case "artist-stat":
@@ -21,8 +21,12 @@ switch($stat) {
   $sql="SELECT COUNT(*) AS count FROM Listener";
   break;
 
-  case "tag-stat":
+  case "song-tag-stat":
   $sql="SELECT COUNT(*) AS count FROM Tag";
+  break;
+
+  case "artist-tag-stat":
+  $sql="SELECT COUNT(*) AS count FROM Artist_Tag";
   break;
 }
 
