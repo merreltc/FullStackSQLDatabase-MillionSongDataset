@@ -31,7 +31,6 @@
 			var tag_type = type;
 			var song = document.getElementById('title').value;
 			var artist = document.getElementById('artist').value;
-			var tag = document.getElementById('tag').value;
 
 			if (window.XMLHttpRequest) {
 	            // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -48,19 +47,24 @@
 
 	        switch(tag_type) {
 	        	case "song":
-	        	xmlhttp.open("GET","php/try_tag.php?type="+tag_type+"&song_val="+song+"&tag_val="+tag,true);
+	        	var tag = document.getElementById('song-tag').value;
+	        	xmlhttp.open("GET","php/try_tag.php?type="+tag_type+"&song_val="+song+"&artist_val="+artist+"&tag_val="+tag,true);
 	        	xmlhttp.send();
+
+	        	hide('tag-song');
+	        	document.getElementById('tag-song').reset();
 	        	break;
 	        	case "artist":
+	        	var tag = document.getElementById('artist-tag').value;
 	        	xmlhttp.open("GET","php/try_tag.php?type="+tag_type+"&artist_val="+artist+"&tag_val="+tag,true);
 	        	xmlhttp.send();
+
+	        	hide('tag-artist');
+	        	document.getElementById('tag-artist').reset();
 	        	break;
 	        }
 
 	        document.getElementById('form-complete').style.display = '';
-
-	        hide('tag-song');
-	        document.getElementById('tag-song').reset();
 	    }
 	</script>
 </head>
@@ -109,7 +113,8 @@
 
 		<form id="tag-song" style="display:none" action="javascript:tag('song')">
 			Title*<input type="text" id="title" maxlength="200" required>
-			Tag*<input type="text" id="tag" maxlength="200" required>
+			Artist*<input type="text" id="artist" maxlength="200" required>
+			Tag*<input type="text" id="song-tag" maxlength="200" required>
 			* Required field<br>
 			<input type="submit" value="Submit">
 			<input type="reset" value="Reset">
@@ -117,7 +122,7 @@
 
 		<form id="tag-artist" style="display:none" action="javascript:tag('artist')">
 			Artist*<input type="text" id="artist" maxlength="200" required>
-			Tag*<input type="text" id="tag" maxlength="200" required>
+			Tag*<input type="text" id="artist-tag" maxlength="200" required>
 			* Required field<br>
 			<input type="submit" value="Submit">
 			<input type="reset" value="Reset">
