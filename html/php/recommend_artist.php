@@ -7,16 +7,8 @@ if (!$con) {
 }
 
 mysqli_select_db($con,'projecttest');
-$sql = "SELECT a.*, SUM(l.playcount) AS Weight
-	FROM Artist AS a, Listens_To_Artist AS l
-	WHERE a.echonest_id = l.artist AND l.listener IN (
-		SELECT DISTINCT listener
-		FROM Listens_To_Artist
-		WHERE artist IN (SELECT echonest_id
-				FROM Artist
-				WHERE name LIKE '%{$artistname}%'))
-	GROUP BY a.*
-	ORDER BY Weight";
+
+$sql = "CALL recommend_artist('{$artist}')"
 $result = mysqli_query($con,$sql);
 
 if (mysqli_num_rows($result) > 0) {

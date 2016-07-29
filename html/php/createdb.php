@@ -293,5 +293,20 @@ if (mysqli_query($con, $sql)) {
 } else {
 	echo "Error creating sproc: " . mysqli_error($con) . "\n";
 }
+
+// sproc for artist recommendation
+$sql = "CREATE PROCEDURE recommend_artist(artist_name VARCHAR(500))
+	BEGIN
+	SELECT a.name AS Artist, SUM(l.playcount) AS Weight
+	FROM Artist AS a, Listens_To_Artist AS l
+	WHERE a.echonest_id = l.artist AND l.listener IN (
+		SELECT DISTINCT listener
+		FROM Listens_To_Artist
+		WHERE artist IN (SELECT echonest_id
+				FROM Artist
+				WHERE name LIKE '%', artist_name, '%'))
+	GROUP BY Artist
+	ORDER BY Weight DESC
+	END";
 mysqli_close($con);
 ?>

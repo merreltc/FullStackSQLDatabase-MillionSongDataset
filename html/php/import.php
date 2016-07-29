@@ -5,6 +5,7 @@ function sanitizeField($field) {
 	$san = str_replace("'", "''", $field);
 	$san = str_replace("[", "", $san);
 	$san = str_replace("]", "", $san);
+	$san = str_replace("\\", "", $san);
 	$san = rtrim($san);
 	return $san;
 }
