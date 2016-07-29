@@ -269,8 +269,9 @@ $sql = "CREATE PROCEDURE recommend_song(song_name VARCHAR(500), artist_name VARC
 				WHERE title LIKE CONCAT('%', song_name, '%')
 		)
 	)
-	GROUP BY s.title, a.name, s.genre, s.album, s.release_year
-	ORDER BY Weight DESC;
+	GROUP BY s.title, a.name, s.album
+	ORDER BY Weight DESC
+	LIMIT 25;
 
 	ELSE 
 	SELECT s.title, a.name, s.album, SUM(l.playcount) AS Weight
@@ -285,8 +286,9 @@ $sql = "CREATE PROCEDURE recommend_song(song_name VARCHAR(500), artist_name VARC
 				AND a.name LIKE CONCAT('%', artist_name, '%')
 		)
 	)
-	GROUP BY Song
-	ORDER BY Weight DESC;
+	GROUP BY s.title, a.name, s.album
+	ORDER BY Weight DESC
+	LIMIT 25;
 	END IF;
 	END";
 
@@ -311,7 +313,8 @@ $sql = "CREATE PROCEDURE recommend_artist(artist_name VARCHAR(500))
 		)
 	)
 	GROUP BY Artist
-	ORDER BY Weight DESC;
+	ORDER BY Weight DESC
+	LIMIT 25;
 	END";
 
 if (mysqli_query($con, $sql)) {
