@@ -258,7 +258,7 @@ $sql = "CREATE PROCEDURE recommend_song(song_name VARCHAR(500), artist_name VARC
 		WHERE title LIKE CONCAT('%', song_name, '%')
 		HAVING count(*) > 1) 
 	THEN
-	SELECT s.title, a.name, s.genre, s.album, s.release_year, SUM(l.playcount) AS Weight
+	SELECT s.title, a.name, s.album, SUM(l.playcount) AS Weight
 	FROM Song AS s, Listens_To_Song AS l, Artist AS a
 	WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND
 	s.title <> song_name AND l.listener IN (
@@ -273,7 +273,7 @@ $sql = "CREATE PROCEDURE recommend_song(song_name VARCHAR(500), artist_name VARC
 	ORDER BY Weight DESC;
 
 	ELSE 
-	SELECT s.title, a.name, s.genre, s.album, s.release_year, SUM(l.playcount) AS Weight
+	SELECT s.title, a.name, s.album, SUM(l.playcount) AS Weight
 	FROM Song AS s, Listens_To_Song AS l, Artist AS a
 	WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND
 	s.title <> song_name AND l.listener IN (
@@ -293,7 +293,7 @@ $sql = "CREATE PROCEDURE recommend_song(song_name VARCHAR(500), artist_name VARC
 if (mysqli_query($con, $sql)) {
 	echo "Created song recommendation sproc\n";
 } else {
-	echo "Error creating sproc: " . mysqli_error($con) . "\n";
+	echo "Error creating song sproc: " . mysqli_error($con) . "\n";
 }
 
 // sproc for artist recommendation
@@ -317,7 +317,7 @@ $sql = "CREATE PROCEDURE recommend_artist(artist_name VARCHAR(500))
 if (mysqli_query($con, $sql)) {
 	echo "Created artist recommendation sproc\n";
 } else {
-	echo "Error creating sproc: " . mysqli_error($con) . "\n";
+	echo "Error creating artist sproc: " . mysqli_error($con) . "\n";
 }
 mysqli_close($con);
 

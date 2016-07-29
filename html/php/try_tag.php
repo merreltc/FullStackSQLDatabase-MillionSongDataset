@@ -69,7 +69,6 @@ switch(tag_type) {
 		echo "<p>Error tagging artist: ".mysqli_error($con)." Please try again or <a href='#'>contact us.</a></p>";
 	}
 	break;
-	break;
 }
 
 mysqli_close($con);

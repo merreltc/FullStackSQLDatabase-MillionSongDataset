@@ -11,7 +11,7 @@ $tag = $_GET['tag'];
 
 switch($search) {
 	case "song":
-	$sql="SELECT s.title, a.name, s.genre, s.album, s.release_year FROM Song s, Artist a WHERE s.artist = a.echonest_id AND title = 'Smile'";
+	$sql="SELECT s.title, a.name, s.genre, s.album, s.release_year FROM Tag t, Song s WHERE t.song = s.echonest_id AND at.tag LIKE '_\"\"".$tag."\"\"'";
 	$result = mysqli_query($con,$sql);
 
 	if (mysqli_num_rows($result) > 0) {
@@ -35,12 +35,12 @@ switch($search) {
 		}
 		echo "</table>";
 	} else {
-		echo '<p>This tag is not in our database.</p>';
+		echo '<p>This song tag is not in our database.</p>';
 	}
 	break;
 
 	case "artist":
-	$sql="SELECT DISTINCT a.name, a.hotttnesss, a.familiarity FROM Artist_Tag at, Artist a WHERE at.artist = a.echonest_id AND at.tag LIKE '%".$tag."%'";
+	$sql="SELECT DISTINCT a.name, a.hotttnesss, a.familiarity FROM Artist_Tag at, Artist a WHERE at.artist = a.echonest_id AND at.tag LIKE '_\"\"".$tag."\"\"'";
 	$result = mysqli_query($con,$sql);
 
 	if (mysqli_num_rows($result) > 0) {
@@ -61,7 +61,7 @@ switch($search) {
 		}
 		echo "</table>";
 	} else {
-		echo '<p>This artist is not in our database.</p>';
+		echo '<p>This artist tag is not in our database.</p>';
 	}
 	break;
 
