@@ -213,13 +213,14 @@ function showRecommendations(divId)
 
     	case "recommend-song":
     	var song = $('#song').val();
+    	var artist= $('#song-artist').val();
 
     	if(song == "") {
     		$('#'+divId).html('<b>Please input a song</b>');
     		return;
     	}
 
-    	xmlhttp.open("GET","php/recommend_song.php?song="+song,true);
+    	xmlhttp.open("GET","php/recommend_song.php?song="+song+"&artist="+artist,true);
     	xmlhttp.send();
     	break;
 

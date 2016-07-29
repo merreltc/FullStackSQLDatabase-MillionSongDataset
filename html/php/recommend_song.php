@@ -1,5 +1,6 @@
 <?php
-$song = $_GET['song']; // Get input text   
+$song = $_GET['song'];
+$artist = $_GET['song-artist'];
 
 $con = mysqli_connect('localhost','superuser','superP@$$123','testdb');
 if (!$con) {
@@ -16,7 +17,7 @@ $sql = "SELECT s.title, a.name, s.genre, s.album, s.release_year, SUM(l.playcoun
 				FROM Song
 				WHERE title LIKE '%{$songname}%'))
 	GROUP BY s.title, a.name, s.genre, s.album, s.release_year
-	ORDER BY Weight";
+	ORDER BY Weight DESC";
 $result = mysqli_query($con,$sql);
 
 if (mysqli_num_rows($result) > 0) {

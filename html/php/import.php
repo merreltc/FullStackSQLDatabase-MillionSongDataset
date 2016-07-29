@@ -106,7 +106,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Listens_To_Song (listener, song, playcount)
 			VALUES ({$id}, '{$fields[1]}', {$fields[2]})";
 	
-		if (!mysqli_query($con, $sql)) {
+		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "key 'PRIMARY'") !== false)) {
 		    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
 		}
 	}
@@ -140,7 +140,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Listens_To_Artist (listener, artist, playcount)
 		 VALUES ({$id}, '{$artist}', {$fields[3]})";
 	
-		if (!mysqli_query($con, $sql)) {
+		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "key 'PRIMARY'") !== false)) {
 		    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
 		}
 	}
