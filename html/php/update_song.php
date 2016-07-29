@@ -13,13 +13,17 @@
 	mysqli_select_db($con,'projecttest');
 
 	// Check for song in database first
-	$sql="INSERT INTO `Update-Song`(title, artist, genre, album, release_year) VALUES('".$song."' , '".$artist."' , '"
-		.$genre."' , '".$album."' , '".$year."')";
+	$sql="START TRANSACTION;";
+	mysqli_query($con,$sql);
 
+	$sql="INSERT INTO `Update-Song` (title, artist, genre, album, release_year) VALUES('".$song."', '".$artist."', '".$genre."', '".$album."', '".$year."');";
+	mysqli_query($con,$sql);
+
+	$sql="COMMIT;";
 	if (mysqli_query($con,$sql)) {
 		echo "<p>Song update pending, please wait approx. 72 hours for song to appear on the site.</p>";
 	} else {
-		echo "<p>Error updating song. Please try again or contact us.</p>";
+		echo "<p>Error updating song: ".mysqli_error($con)." Please try again or contact us.</p>";
 	}
 
 	mysqli_close($con);

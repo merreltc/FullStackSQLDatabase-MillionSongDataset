@@ -14,20 +14,12 @@ $result = mysqli_query($con,$sql);
 if (mysqli_num_rows($result) > 0) {
 	echo "<table>
 	<tr>
-		<th>Echonest ID</th>
-		<th>MusicBrainz ID</th>
-		<th>Name</th>
-		<th>Hotttnesss</th>
-		<th>Familiarity</th>
+		<th>Artist</th>
 	</tr>";
 
 	while($row = mysqli_fetch_array($result)) {
 		echo "<tr>";
-		echo "<td>" . $row['echonest_id'] . "</td>";
-		echo "<td>" . $row['musicbrainz_id'] . "</td>";
-		echo "<td>" . $row['name'] . "</td>";
-		echo "<td>" . $row['hotttnesss'] . "</td>";
-		echo "<td>" . $row['familiarity'] . "</td>";
+		echo "<td>" . $row['Artist'] . "</td>";
 		echo "</tr>";
 	}
 	echo "</table>";

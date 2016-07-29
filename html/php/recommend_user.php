@@ -6,7 +6,7 @@ if (!$con) {
 }
 
 mysqli_select_db($con,'projecttest');
-$sql="SELECT s.title, a.name, s.genre,s.album, s.release_year FROM Song s, Artist a WHERE s.artist = a.echonest_id AND title = 'Zanzibar'";
+$sql="SELECT s.title, a.name, s.genre,s.album, s.release_year FROM Song s, Artist a WHERE s.artist = a.echonest_id AND title = 'Smile' LIMIT 10";
 $result = mysqli_query($con,$sql);
 
 echo "<table style='width:100%'>";

@@ -11,7 +11,7 @@ $tag = $_GET['tag'];
 
 switch($search) {
 	case "song":
-	$sql="SELECT s.title, a.name, s.genre, s.album, s.release_year FROM Tag t, Song s WHERE t.song = s.echonest_id AND at.tag LIKE '_\"\"".$tag."\"\"'";
+	$sql="SELECT DISTINCT s.title, a.name, s.genre, s.album, s.release_year FROM Tag t, Song s WHERE t.song = s.echonest_id AND at.tag LIKE '_\"\"".$tag."\"\"'";
 	$result = mysqli_query($con,$sql);
 
 	if (mysqli_num_rows($result) > 0) {

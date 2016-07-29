@@ -268,7 +268,7 @@ function showTagged(divId)
     	break;
 
     	case "tagged-artist":
-    	var tag = $('#artist-tag').val();
+    	var tag = $('#artist-search-tag').val();
 
     	if(tag == "") {
     		$('#'+divId).html('<b>Please input a tag</b>');

@@ -189,6 +189,7 @@ artist varchar(500) NULL,
 genre varchar(100) NULL,
 release_year YEAR NULL, 
 album varchar(500) NULL,
+CONSTRAINT no_duplicates UNIQUE (title, artist, genre, release_year, album),
 CONSTRAINT valid_year CHECK(release_year < YEAR(GETDATE())
 AND release_year > 1800));";
 
@@ -205,6 +206,7 @@ artist varchar(500) NOT NULL,
 genre varchar(100) NULL,
 release_year YEAR NULL, 
 album varchar(500) NOT NULL,
+CONSTRAINT no_duplicates UNIQUE (title, artist, genre, release_year, album),
 CONSTRAINT valid_year CHECK(release_year < YEAR(GETDATE())
 AND release_year > 1800));";
 
@@ -216,81 +218,81 @@ if (mysqli_query($con, $sql)) {
 
 // various triggers that are needed
 $sql = "CREATE TRIGGER songfix
-	BEFORE INSERT
-	ON Song FOR EACH ROW
-	BEGIN
-		IF NEW.release_year = 0 THEN
-		SET NEW.release_year = NULL;
-		END IF;
+BEFORE INSERT
+ON Song FOR EACH ROW
+BEGIN
+IF NEW.release_year = 0 THEN
+SET NEW.release_year = NULL;
+END IF;
 
-		IF NEW.hotttnesss = 0 THEN
-		SET NEW.hotttnesss = NULL;
-		END IF;
-	END";
+IF NEW.hotttnesss = 0 THEN
+SET NEW.hotttnesss = NULL;
+END IF;
+END";
 
 if (mysqli_query($con, $sql)) {
 	echo "Song fix trigger creation dope\n";
 } else {
-	echo "Error creating trigger: " . mysqli_error($con) . "\n";
+	echo "Error creating song fix trigger: " . mysqli_error($con) . "\n";
 }
 
 $sql = "CREATE TRIGGER artistfix
-	BEFORE INSERT
-	ON Artist FOR EACH ROW
-	BEGIN
-		IF NEW.musicbrainz_id = '' THEN
-		SET NEW.musicbrainz_id = NULL;
-		END IF;
-	END";
+BEFORE INSERT
+ON Artist FOR EACH ROW
+BEGIN
+IF NEW.musicbrainz_id = '' THEN
+SET NEW.musicbrainz_id = NULL;
+END IF;
+END";
 
 if (mysqli_query($con, $sql)) {
 	echo "Artist fix trigger creation dope\n";
 } else {
-	echo "Error creating trigger: " . mysqli_error($con) . "\n";
+	echo "Error creating artist fix trigger: " . mysqli_error($con) . "\n";
 }
 
 // sproc for song recommendation
 
 $sql = "CREATE PROCEDURE recommend_song(song_name VARCHAR(500), artist_name VARCHAR(500))
-	BEGIN
-	IF EXISTS (SELECT count(*)
-		FROM Song
-		WHERE title LIKE CONCAT('%', song_name, '%')
-		HAVING count(*) > 1) 
-	THEN
-	SELECT s.title, a.name, s.album, SUM(l.playcount) AS Weight
-	FROM Song AS s, Listens_To_Song AS l, Artist AS a
-	WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND
-	s.title <> song_name AND l.listener IN (
-		SELECT DISTINCT listener
-		FROM Listens_To_Song
-		WHERE song IN (	SELECT echonest_id
-				FROM Song
-				WHERE title LIKE CONCAT('%', song_name, '%')
-		)
-	)
-	GROUP BY s.title, a.name, s.album
-	ORDER BY Weight DESC
-	LIMIT 25;
+BEGIN
+IF EXISTS (SELECT count(*)
+FROM Song
+WHERE title LIKE CONCAT('%', song_name, '%')
+HAVING count(*) > 1) 
+THEN
+SELECT s.title, a.name, s.album, SUM(l.playcount) AS Weight
+FROM Song AS s, Listens_To_Song AS l, Artist AS a
+WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND
+s.title <> song_name AND l.listener IN (
+SELECT DISTINCT listener
+FROM Listens_To_Song
+WHERE song IN (	SELECT echonest_id
+FROM Song
+WHERE title LIKE CONCAT('%', song_name, '%')
+)
+)
+GROUP BY s.title, a.name, s.album
+ORDER BY Weight DESC
+LIMIT 25;
 
-	ELSE 
-	SELECT s.title, a.name, s.album, SUM(l.playcount) AS Weight
-	FROM Song AS s, Listens_To_Song AS l, Artist AS a
-	WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND
-	s.title <> song_name AND l.listener IN (
-		SELECT DISTINCT listener
-		FROM Listens_To_Song
-		WHERE song IN (	SELECT s.echonest_id
-				FROM Song AS s, Artist AS a
-				WHERE s.artist = a.echonest_id AND s.title LIKE CONCAT('%', song_name, '%')
-				AND a.name LIKE CONCAT('%', artist_name, '%')
-		)
-	)
-	GROUP BY s.title, a.name, s.album
-	ORDER BY Weight DESC
-	LIMIT 25;
-	END IF;
-	END";
+ELSE 
+SELECT s.title, a.name, s.album, SUM(l.playcount) AS Weight
+FROM Song AS s, Listens_To_Song AS l, Artist AS a
+WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND
+s.title <> song_name AND l.listener IN (
+SELECT DISTINCT listener
+FROM Listens_To_Song
+WHERE song IN (	SELECT s.echonest_id
+FROM Song AS s, Artist AS a
+WHERE s.artist = a.echonest_id AND s.title LIKE CONCAT('%', song_name, '%')
+AND a.name LIKE CONCAT('%', artist_name, '%')
+)
+)
+GROUP BY s.title, a.name, s.album
+ORDER BY Weight DESC
+LIMIT 25;
+END IF;
+END";
 
 if (mysqli_query($con, $sql)) {
 	echo "Created song recommendation sproc\n";
@@ -300,28 +302,29 @@ if (mysqli_query($con, $sql)) {
 
 // sproc for artist recommendation
 $sql = "CREATE PROCEDURE recommend_artist(artist_name VARCHAR(500))
-	BEGIN
-	SELECT a.name AS Artist, SUM(l.playcount) AS Weight
-	FROM Artist AS a, Listens_To_Artist AS l
-	WHERE a.echonest_id = l.artist AND
-	a.name <> artist_name AND l.listener IN (
-		SELECT DISTINCT listener
-		FROM Listens_To_Artist
-		WHERE artist IN (SELECT echonest_id
-				FROM Artist
-				WHERE name LIKE CONCAT('%', artist_name, '%')
-		)
-	)
-	GROUP BY Artist
-	ORDER BY Weight DESC
-	LIMIT 25;
-	END";
+BEGIN
+SELECT a.name AS Artist, SUM(l.playcount) AS Weight
+FROM Artist AS a, Listens_To_Artist AS l
+WHERE a.echonest_id = l.artist AND
+a.name <> artist_name AND l.listener IN (
+SELECT DISTINCT listener
+FROM Listens_To_Artist
+WHERE artist IN (SELECT echonest_id
+FROM Artist
+WHERE name LIKE CONCAT('%', artist_name, '%')
+)
+)
+GROUP BY Artist
+ORDER BY Weight DESC
+LIMIT 25;
+END";
 
 if (mysqli_query($con, $sql)) {
 	echo "Created artist recommendation sproc\n";
 } else {
 	echo "Error creating artist sproc: " . mysqli_error($con) . "\n";
 }
+
 mysqli_close($con);
 
 ?>
