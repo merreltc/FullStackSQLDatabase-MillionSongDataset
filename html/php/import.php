@@ -5,7 +5,6 @@ function sanitizeField($field) {
 	$san = str_replace("'", "''", $field);
 	$san = str_replace("[", "", $san);
 	$san = str_replace("]", "", $san);
-	$san = str_replace("\\", "", $san);
 	$san = rtrim($san);
 	return $san;
 }
@@ -54,14 +53,6 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Song (echonest_id, track_id, sevendigital_id, title, artist, release_year, album, loudness, hotttnesss, tempo, song_key, mode, start)
 			VALUES ('{$fields[0]}', '{$fields[1]}', '{$fields[2]}', '{$fields[3]}', '{$fields[12]}', {$fields[4]}, '{$fields[5]}', {$fields[6]}, {$fields[7]}, {$fields[8]}, {$fields[9]}, {$fields[10]}, {$fields[11]})";
 	
-	$artistsfile = fopen("/var/www/html/imports/ArtistListens.tsv", "r") or die("Unable to open file! :(");
-
-	while(!feof($artistsfile)) {
-		$fields = explode("\t", fgets($artistsfile));
-		$fields[1] = str_replace("-", "", $fields[1]);
-		$sql = "INSERT INTO Listener (echonest_id, lastfm_sha, username)
-			VALUES (null, '{$fields[0]}', null)";
-
 		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
 		    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
 		}
@@ -106,7 +97,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Listens_To_Song (listener, song, playcount)
 			VALUES ({$id}, '{$fields[1]}', {$fields[2]})";
 	
-		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "key 'PRIMARY'") !== false)) {
+		if (!mysqli_query($con, $sql)) {
 		    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
 		}
 	}
@@ -140,7 +131,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "INSERT INTO Listens_To_Artist (listener, artist, playcount)
 		 VALUES ({$id}, '{$artist}', {$fields[3]})";
 	
-		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "key 'PRIMARY'") !== false)) {
+		if (!mysqli_query($con, $sql)) {
 		    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
 		}
 	}
@@ -151,6 +142,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 
 	while(!feof($songtagfile)) {
 		$fields = sanitizeArray(explode("\t", fgets($songtagfile)));
+
 		$sql = "SELECT echonest_id
 			FROM Song
 			WHERE track_id = '{$fields[1]}'";
@@ -163,6 +155,7 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 
 		$sql = "INSERT INTO Tag (song, tag)
 			VALUES ('{$song_id}', '{$fields[0]}')";
+	
 		if (!mysqli_query($con, $sql)) {
 		    echo "Error: " . $sql . "\n\n" . mysqli_error($con);
 		}

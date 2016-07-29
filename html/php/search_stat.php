@@ -7,11 +7,17 @@ if (!$con) {
 mysqli_select_db($con,'projecttest');
 
 $search = $_GET['search'];
-$name = $_GET['name'];
+$song = $_GET['song'];
+$artist = $_GET['artist'];
 
 switch($search) {
 	case "song":
-	$sql="SELECT s.title, a.name, s.genre, s.album, s.release_year FROM Song s, Artist a WHERE s.artist = a.echonest_id AND title = '".$name."'";
+	if($artist == "") {
+		$sql="SELECT s.title, a.name, s.genre, s.album, s.release_year FROM Song s, Artist a WHERE s.artist = a.echonest_id AND s.title = '".$song."'";
+	} else  {
+		$sql="SELECT s.title, a.name, s.genre, s.album, s.release_year FROM Song s, Artist a WHERE s.artist = a.echonest_id AND a.name = '".$artist."' AND s.title = '".$song."'";
+	}
+
 	$result = mysqli_query($con,$sql);
 
 	if (mysqli_num_rows($result) > 0) {
@@ -35,17 +41,16 @@ switch($search) {
 		}
 		echo "</table>";
 	} else {
-		echo '<p>This tag is not in our database.</p>';
+		echo '<p>This song is not in our database.</p>';
 	}
 	break;
 
 	case "artist":
-	$sql="SELECT DISTINCT a.name, a.hotttnesss, a.familiarity FROM Artist a WHERE a.name = '".$name."'";
+	$sql="SELECT DISTINCT name, hotttnesss, familiarity FROM Artist WHERE name = '".$artist."'";
 	$result = mysqli_query($con,$sql);
 
 	if (mysqli_num_rows($result) > 0) {
-		echo "<p>Artists tagged with: <b>".$tag."</b></p>
-		<table>
+		echo "<table>
 		<tr>
 			<th>Name</th>
 			<th>Hotttnesss</th>

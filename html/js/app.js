@@ -300,25 +300,26 @@ function showStat(divId)
 
     switch(divId) {
     	case "song-search":
-    	var name = $('#song').val();
+    	var song = $('#song').val();
+    	var artist = $('#song-artist').val();
 
-    	if(name == "") {
+    	if(song == "") {
     		$('#'+divId).html('<b>Please input a song</b>');
     		return;
     	}
-    	xmlhttp.open("GET","php/search_stat.php?search=song&name="+name,true);
+    	xmlhttp.open("GET","php/search_stat.php?search=song&song="+song+"&artist="+artist,true);
     	xmlhttp.send();
     	break;
 
     	case "artist-search":
-    	var name = $('#artist').val();
+    	var artist = $('#artist').val();
 
-    	if(name == "") {
+    	if(artist == "") {
     		$('#'+divId).html('<b>Please input an artist</b>');
     		return;
     	}
 
-    	xmlhttp.open("GET","php/search_stat.php?search=artist&name="+name,true);
+    	xmlhttp.open("GET","php/search_stat.php?search=artist&artist="+artist,true);
     	xmlhttp.send();
     	break;
     }
