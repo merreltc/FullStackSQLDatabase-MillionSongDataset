@@ -260,7 +260,8 @@ $sql = "CREATE PROCEDURE recommend_song(song_name VARCHAR(500), artist_name VARC
 	THEN
 	SELECT s.title, a.name, s.genre, s.album, s.release_year, SUM(l.playcount) AS Weight
 	FROM Song AS s, Listens_To_Song AS l, Artist AS a
-	WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND l.listener IN (
+	WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND
+	s.title <> song_name AND l.listener IN (
 		SELECT DISTINCT listener
 		FROM Listens_To_Song
 		WHERE song IN (	SELECT echonest_id
@@ -272,9 +273,10 @@ $sql = "CREATE PROCEDURE recommend_song(song_name VARCHAR(500), artist_name VARC
 	ORDER BY Weight DESC;
 
 	ELSE 
-	SELECT s.title AS Song, SUM(l.playcount) AS Weight
-	FROM Song AS s, Listens_To_Song AS l
-	WHERE s.echonest_id = l.song AND l.listener IN (
+	SELECT s.title, a.name, s.genre, s.album, s.release_year, SUM(l.playcount) AS Weight
+	FROM Song AS s, Listens_To_Song AS l, Artist AS a
+	WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND
+	s.title <> song_name AND l.listener IN (
 		SELECT DISTINCT listener
 		FROM Listens_To_Song
 		WHERE song IN (	SELECT s.echonest_id
@@ -299,14 +301,24 @@ $sql = "CREATE PROCEDURE recommend_artist(artist_name VARCHAR(500))
 	BEGIN
 	SELECT a.name AS Artist, SUM(l.playcount) AS Weight
 	FROM Artist AS a, Listens_To_Artist AS l
-	WHERE a.echonest_id = l.artist AND l.listener IN (
+	WHERE a.echonest_id = l.artist AND
+	a.name <> artist_name AND l.listener IN (
 		SELECT DISTINCT listener
 		FROM Listens_To_Artist
 		WHERE artist IN (SELECT echonest_id
 				FROM Artist
-				WHERE name LIKE '%', artist_name, '%'))
+				WHERE name LIKE CONCAT('%', artist_name, '%')
+		)
+	)
 	GROUP BY Artist
-	ORDER BY Weight DESC
+	ORDER BY Weight DESC;
 	END";
+
+if (mysqli_query($con, $sql)) {
+	echo "Created artist recommendation sproc\n";
+} else {
+	echo "Error creating sproc: " . mysqli_error($con) . "\n";
+}
 mysqli_close($con);
+
 ?>
