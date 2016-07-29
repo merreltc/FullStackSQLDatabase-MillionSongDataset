@@ -4,9 +4,10 @@ function riylSong($songname) {
 	if (!$con) {
 		die("Could not connect: " . mysqli_error($con) . "\n");
 	}
-	$sql = "SELECT count(*)
+	$sql = "IF EXISTS (SELECT count(*)
 		FROM Song
-		WHERE title LIKE '%{$songname}%'";
+		WHERE title LIKE '%{$songname}%'
+		HAVING count(*) > 1)";
 	$result = mysqli_query($con, $sql);
 	if (mysqli_fetch_array($result, MYSQLI_NUM)[0] > 1) {
 		//I dunno yet
@@ -17,9 +18,9 @@ function riylSong($songname) {
 		WHERE s.echonest_id = l.song AND l.listener IN (
 			SELECT DISTINCT listener
 			FROM Listens_To_Song
-			WHERE song IN (	SELECT echonest_id
-					FROM Song
-					WHERE title LIKE '%{$songname}%'))
+			WHERE song IN (	SELECT s.echonest_id
+					FROM Song AS s, Artist AS a
+					WHERE s.artist = a.echonest_id AND s.title LIKE '%{$songname}%'))
 		GROUP BY Song
 		ORDER BY Weight";
 	$result = mysqli_query($con, $sql);
@@ -53,4 +54,35 @@ function riylArtist($artistname) {
 }
 
 var_dump(riylArtist("Killers"));
+
+$sql = "CREATE PROCEDURE recommend_song()
+	BEGIN
+	IF EXISTS (SELECT count(*)
+		FROM Song
+		WHERE title LIKE '%{$songname}%'
+		HAVING count(*) > 1) 
+	THEN
+	SELECT s.title, a.name, s.genre, s.album, s.release_year, SUM(l.playcount) AS Weight
+	FROM Song AS s, Listens_To_Song AS l, Artist AS a
+	WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND l.listener IN (
+		SELECT DISTINCT listener
+		FROM Listens_To_Song
+		WHERE song IN (	SELECT echonest_id
+				FROM Song
+				WHERE title LIKE '%{$songname}%'))
+	GROUP BY s.title, a.name, s.genre, s.album, s.release_year
+	ORDER BY Weight
+	ELSE THEN
+	SELECT s.title AS Song, SUM(l.playcount) AS Weight
+		FROM Song AS s, Listens_To_Song AS l
+		WHERE s.echonest_id = l.song AND l.listener IN (
+			SELECT DISTINCT listener
+			FROM Listens_To_Song
+			WHERE song IN (	SELECT s.echonest_id
+					FROM Song AS s, Artist AS a
+					WHERE s.artist = a.echonest_id AND s.title LIKE '%{$songname}%'))
+		GROUP BY Song
+		ORDER BY Weight
+	END IF
+	END";
 ?>

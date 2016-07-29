@@ -249,5 +249,49 @@ if (mysqli_query($con, $sql)) {
 	echo "Error creating trigger: " . mysqli_error($con) . "\n";
 }
 
+// sproc for song recommendation
+
+$sql = "CREATE PROCEDURE recommend_song(song_name VARCHAR(500), artist_name VARCHAR(500))
+	BEGIN
+	IF EXISTS (SELECT count(*)
+		FROM Song
+		WHERE title LIKE CONCAT('%', song_name, '%')
+		HAVING count(*) > 1) 
+	THEN
+	SELECT s.title, a.name, s.genre, s.album, s.release_year, SUM(l.playcount) AS Weight
+	FROM Song AS s, Listens_To_Song AS l, Artist AS a
+	WHERE s.echonest_id = l.song AND s.artist = a.echonest_id AND l.listener IN (
+		SELECT DISTINCT listener
+		FROM Listens_To_Song
+		WHERE song IN (	SELECT echonest_id
+				FROM Song
+				WHERE title LIKE CONCAT('%', song_name, '%')
+		)
+	)
+	GROUP BY s.title, a.name, s.genre, s.album, s.release_year
+	ORDER BY Weight DESC;
+
+	ELSE 
+	SELECT s.title AS Song, SUM(l.playcount) AS Weight
+	FROM Song AS s, Listens_To_Song AS l
+	WHERE s.echonest_id = l.song AND l.listener IN (
+		SELECT DISTINCT listener
+		FROM Listens_To_Song
+		WHERE song IN (	SELECT s.echonest_id
+				FROM Song AS s, Artist AS a
+				WHERE s.artist = a.echonest_id AND s.title LIKE CONCAT('%', song_name, '%')
+				AND a.name LIKE CONCAT('%', artist_name, '%')
+		)
+	)
+	GROUP BY Song
+	ORDER BY Weight DESC;
+	END IF;
+	END";
+
+if (mysqli_query($con, $sql)) {
+	echo "Created song recommendation sproc\n";
+} else {
+	echo "Error creating sproc: " . mysqli_error($con) . "\n";
+}
 mysqli_close($con);
 ?>
