@@ -78,66 +78,66 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 	
 	echo "Genres imported\n";
 
-	$songsfile = fopen("/var/www/html/imports/SongListens.tsv", "r") or die("Unable to open file! :(");
+	// $songsfile = fopen("/var/www/html/imports/SongListens.tsv", "r") or die("Unable to open file! :(");
 
-	while(!feof($songsfile)) {
-		$fields = explode("\t", fgets($songsfile));
-		$sql = "INSERT INTO Listener (echonest_id, lastfm_sha, username)
-		 	VALUES ('{$fields[0]}', null, null)";
+	// while(!feof($songsfile)) {
+	// 	$fields = explode("\t", fgets($songsfile));
+	// 	$sql = "INSERT INTO Listener (echonest_id, lastfm_sha, username)
+	// 	 	VALUES ('{$fields[0]}', null, null)";
 
-		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
-		    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
-		}
+	// 	if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
+	// 	    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
+	// 	}
 
-		$sql = "SELECT master_id
-			FROM Listener
-			WHERE echonest_id = '{$fields[0]}'";
-		$result = mysqli_query($con, $sql);
-		$id = mysqli_fetch_array($result, MYSQLI_ASSOC)["master_id"];
+	// 	$sql = "SELECT master_id
+	// 		FROM Listener
+	// 		WHERE echonest_id = '{$fields[0]}'";
+	// 	$result = mysqli_query($con, $sql);
+	// 	$id = mysqli_fetch_array($result, MYSQLI_ASSOC)["master_id"];
 
-		$sql = "INSERT INTO Listens_To_Song (listener, song, playcount)
-			VALUES ({$id}, '{$fields[1]}', {$fields[2]})";
+	// 	$sql = "INSERT INTO Listens_To_Song (listener, song, playcount)
+	// 		VALUES ({$id}, '{$fields[1]}', {$fields[2]})";
 	
-		if (!mysqli_query($con, $sql)) {
-		    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
-		}
-	}
-	fclose($songsfile);
-	echo "Listeners and SongListens imported\n";
+	// 	if (!mysqli_query($con, $sql)) {
+	// 	    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
+	// 	}
+	// }
+	// fclose($songsfile);
+	// echo "Listeners and SongListens imported\n";
 	
-	$artistsfile = fopen("/var/www/html/imports/ArtistListens.tsv", "r") or die("Unable to open file! :(");
+	// $artistsfile = fopen("/var/www/html/imports/ArtistListens.tsv", "r") or die("Unable to open file! :(");
 
-	while(!feof($artistsfile)) {
-		$fields = explode("\t", fgets($artistsfile));
-		$fields[1] = str_replace("-", "", $fields[1]);
-		$sql = "INSERT INTO Listener (echonest_id, lastfm_sha, username)
-			VALUES (null, '{$fields[0]}', null)";
+	// while(!feof($artistsfile)) {
+	// 	$fields = explode("\t", fgets($artistsfile));
+	// 	$fields[1] = str_replace("-", "", $fields[1]);
+	// 	$sql = "INSERT INTO Listener (echonest_id, lastfm_sha, username)
+	// 		VALUES (null, '{$fields[0]}', null)";
 
-		if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
-		    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
-		}
+	// 	if (!mysqli_query($con, $sql) && !(strpos(mysqli_error($con), "Duplicate") !== false)) {
+	// 	    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
+	// 	}
 	     
-		$sql = "SELECT master_id
-			FROM Listener
-			WHERE lastfm_sha = '{$fields[0]}'";
-		$result = mysqli_query($con, $sql);
-		$id = mysqli_fetch_array($result, MYSQLI_ASSOC)["master_id"];
+	// 	$sql = "SELECT master_id
+	// 		FROM Listener
+	// 		WHERE lastfm_sha = '{$fields[0]}'";
+	// 	$result = mysqli_query($con, $sql);
+	// 	$id = mysqli_fetch_array($result, MYSQLI_ASSOC)["master_id"];
 
-		$sql = "SELECT echonest_id
-			FROM Artist
-			WHERE musicbrainz_id = '{$fields[1]}'";
-		$result = mysqli_query($con, $sql);
-		$artist = mysqli_fetch_array($result, MYSQLI_ASSOC)["echonest_id"];
+	// 	$sql = "SELECT echonest_id
+	// 		FROM Artist
+	// 		WHERE musicbrainz_id = '{$fields[1]}'";
+	// 	$result = mysqli_query($con, $sql);
+	// 	$artist = mysqli_fetch_array($result, MYSQLI_ASSOC)["echonest_id"];
 	     
-		$sql = "INSERT INTO Listens_To_Artist (listener, artist, playcount)
-		 VALUES ({$id}, '{$artist}', {$fields[3]})";
+	// 	$sql = "INSERT INTO Listens_To_Artist (listener, artist, playcount)
+	// 	 VALUES ({$id}, '{$artist}', {$fields[3]})";
 	
-		if (!mysqli_query($con, $sql)) {
-		    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
-		}
-	}
-	fclose($artistsfile);
-	echo "Listeners and ArtistListens imported\n\n";
+	// 	if (!mysqli_query($con, $sql)) {
+	// 	    echo "Error: " . $sql . "\n" . mysqli_error($con) . "\n\n";
+	// 	}
+	// }
+	// fclose($artistsfile);
+	// echo "Listeners and ArtistListens imported\n\n";
 
 	$songtagfile = fopen("/var/www/html/imports/SongTags.tsv", "r") or die("Unable to open file! :(");
 
@@ -147,12 +147,12 @@ $con = mysqli_connect('localhost','superuser','superP@$$123');
 		$sql = "SELECT echonest_id
 			FROM Song
 			WHERE track_id = '{$fields[1]}'";
-		echo $sql . "\n\n";
+		// echo $sql . "\n\n";
 
 		$result = mysqli_query($con, $sql);
 		$song_id = mysqli_fetch_array($result, MYSQLI_ASSOC)["echonest_id"];
 
-		echo $song_id . "\n";
+		// echo $song_id . "\n";
 
 		$sql = "INSERT INTO Tag (song, tag)
 			VALUES ('{$song_id}', '{$fields[0]}')";

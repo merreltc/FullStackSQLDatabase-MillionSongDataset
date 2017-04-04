@@ -7,7 +7,7 @@
 	<script>
 		function restart() {
 			hide('form-complete');
-			document.getElementById('form-complete').innerHTML = "Words will go here.";
+			document.getElementById('form-complete').innerHTML = "";
 
 			hide('tag-song');
 			document.getElementById('tag-song').reset();
@@ -104,11 +104,6 @@
 
 	<hr>
 
-	<div class="text-center">
-		<img class="thumbnail" src="http://placehold.it/1000x500">
-	</div>
-
-	<hr>
 	<div class="row">
 
 		<h5>What do you want to do?</h5>
@@ -140,7 +135,7 @@
 			<input type="reset" value="Reset">
 		</form>
 
-		<div id="form-complete">Words will go here</div>
+		<div id="form-complete"></div>
 
 		<div id="search-song" style="display:none">
 
